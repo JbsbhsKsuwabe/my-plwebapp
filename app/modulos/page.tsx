@@ -49,3 +49,4 @@ export default function ModulosPage() {
     </div>
   );
 }
+export const runtime = 'edge';

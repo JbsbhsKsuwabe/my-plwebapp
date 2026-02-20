@@ -1,7 +1,24 @@
 import Link from "next/link";
 import { modulos } from "@/data/modulos";
-import ModuloCard from "@/components/ModuloCard";
 import ProgressoBar from "@/components/ProgressoBar";
+
+const STARS = [
+  {l:5,t:8,d:0.2,a:2.1},{l:12,t:45,d:1.5,a:3.2},{l:18,t:22,d:0.8,a:2.8},{l:25,t:67,d:2.1,a:4.0},
+  {l:31,t:15,d:0.5,a:2.3},{l:38,t:82,d:1.9,a:3.7},{l:44,t:38,d:0.3,a:2.6},{l:51,t:55,d:2.7,a:4.5},
+  {l:57,t:10,d:1.1,a:2.0},{l:63,t:73,d:0.7,a:3.1},{l:69,t:28,d:2.3,a:4.2},{l:76,t:90,d:0.9,a:2.9},
+  {l:82,t:42,d:1.6,a:3.5},{l:88,t:18,d:0.4,a:2.4},{l:94,t:60,d:2.0,a:4.1},{l:7,t:33,d:1.3,a:3.0},
+  {l:14,t:78,d:0.6,a:2.7},{l:21,t:50,d:2.4,a:4.3},{l:28,t:5,d:1.0,a:2.2},{l:35,t:95,d:0.2,a:3.8},
+  {l:42,t:62,d:1.8,a:3.4},{l:49,t:25,d:2.6,a:4.6},{l:55,t:85,d:0.8,a:2.5},{l:62,t:40,d:1.4,a:3.3},
+  {l:68,t:12,d:2.2,a:4.0},{l:75,t:57,d:0.5,a:2.8},{l:81,t:30,d:1.7,a:3.6},{l:87,t:72,d:0.3,a:2.1},
+  {l:93,t:48,d:2.5,a:4.4},{l:3,t:88,d:1.2,a:3.2},{l:10,t:20,d:0.7,a:2.9},{l:17,t:65,d:2.0,a:3.7},
+  {l:23,t:35,d:0.4,a:2.3},{l:30,t:92,d:1.6,a:4.1},{l:37,t:8,d:2.3,a:3.9},{l:43,t:48,d:0.9,a:2.6},
+  {l:50,t:75,d:1.5,a:3.5},{l:56,t:22,d:2.1,a:4.3},{l:64,t:58,d:0.6,a:2.4},{l:70,t:85,d:1.9,a:3.8},
+  {l:77,t:15,d:0.3,a:2.0},{l:83,t:68,d:2.4,a:4.2},{l:90,t:38,d:1.1,a:3.1},{l:96,t:78,d:0.8,a:2.7},
+  {l:4,t:52,d:2.6,a:4.5},{l:11,t:30,d:0.5,a:2.2},{l:19,t:70,d:1.8,a:3.6},{l:26,t:18,d:0.2,a:4.0},
+  {l:33,t:88,d:2.2,a:3.3},{l:40,t:42,d:1.3,a:2.8},{l:47,t:62,d:0.7,a:4.1},{l:54,t:5,d:2.0,a:3.0},
+  {l:60,t:35,d:0.4,a:2.5},{l:67,t:95,d:1.6,a:3.9},{l:73,t:55,d:2.5,a:4.4},{l:80,t:25,d:0.9,a:2.3},
+  {l:86,t:80,d:1.4,a:3.7},{l:92,t:10,d:2.8,a:4.6},{l:98,t:45,d:0.6,a:2.1},{l:15,t:58,d:1.7,a:3.4},
+];
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,23 +32,23 @@ export default function HomePage() {
     <div>
       {/* === HERO / MURAL === */}
       <section className="relative overflow-hidden bg-slate-950 border-b border-slate-800">
-        {/* Fundo estrelado */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/40 via-slate-950 to-slate-950" />
-          {/* Stars */}
-          {[...Array(60)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-0.5 h-0.5 bg-white rounded-full opacity-40"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 3}s`,
-              }}
-            />
-          ))}
-        </div>
+          {/* Fundo estrelado */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/40 via-slate-950 to-slate-950" />
+            {/* Stars */}
+            {STARS.map((s, i) => (
+              <div
+                key={i}
+                className="absolute w-0.5 h-0.5 bg-white rounded-full opacity-40"
+                style={{
+                  left: `${s.l}%`,
+                  top: `${s.t}%`,
+                  animationDelay: `${s.d}s`,
+                  animationDuration: `${s.a}s`,
+                }}
+              />
+            ))}
+          </div>
 
         <div className="relative max-w-7xl mx-auto px-4 pt-16 pb-12">
           {/* Título principal */}
@@ -362,3 +379,4 @@ function ImpactoCard({
     </div>
   );
 }
+export const runtime = 'edge';

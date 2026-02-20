@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Tem Luz Aí? | Poluição Luminosa",
@@ -25,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.className} bg-slate-950 min-h-screen`}>
+      <body className={`bg-slate-950 min-h-screen font-sans`}>
         <Navbar />
         <main className="pt-16">{children}</main>
         <footer className="mt-24 border-t border-slate-800 bg-slate-900/50">

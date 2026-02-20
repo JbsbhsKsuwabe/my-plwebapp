@@ -70,3 +70,4 @@ export default function QuizGeralPage() {
     </div>
   );
 }
+export const runtime = 'edge';

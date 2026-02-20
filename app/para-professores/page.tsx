@@ -346,3 +346,4 @@ function Accordion({
     </details>
   );
 }
+export const runtime = 'edge';

@@ -18,10 +18,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  return modulos.map((m) => ({ id: m.slug }));
-}
-
 function renderMarkdown(text: string) {
   const lines = text.split("\n");
   const elements: React.ReactNode[] = [];
@@ -114,7 +110,7 @@ function renderMarkdown(text: string) {
   let tableRows: React.ReactNode[] = [];
   let inTable = false;
   for (const el of elements) {
-    const elType = (el as any)?.type;
+    const elType = (el as React.ReactElement)?.type;
     if (elType === "tr") {
       if (!inTable) {
         inTable = true;
@@ -322,3 +318,6 @@ export default async function ModuloPage({ params }: Props) {
     </div>
   );
 }
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';

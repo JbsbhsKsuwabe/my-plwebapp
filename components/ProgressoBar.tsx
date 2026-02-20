@@ -14,18 +14,18 @@ interface ProgressoData {
 }
 
 export default function ProgressoBar() {
-  const [progresso, setProgresso] = useState<ProgressoData>({});
-  const [mounted, setMounted] = useState(false);
+  const [progresso, setProgresso] = useState<ProgressoData | null>(null);
 
   useEffect(() => {
-    setMounted(true);
     const saved = localStorage.getItem("tem_luz_ai_progresso");
     if (saved) {
       setProgresso(JSON.parse(saved));
+    } else {
+      setProgresso({});
     }
   }, []);
 
-  if (!mounted) return null;
+  if (progresso === null) return null;
 
   const quizzesCompletos = modulos.filter(
     (m) => progresso[`quiz_modulo_${m.id}`]

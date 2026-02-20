@@ -6,19 +6,29 @@ export const metadata: Metadata = {
     "Fotografe o céu à noite e participe do nosso desafio! As 10 melhores fotos serão destacadas. Veja nosso tutorial de fotografia noturna.",
 };
 
+const STARS_D = [
+  {l:3,t:12},{l:9,t:55},{l:15,t:28},{l:22,t:72},{l:28,t:8},{l:35,t:88},
+  {l:41,t:42},{l:47,t:65},{l:54,t:18},{l:60,t:82},{l:66,t:35},{l:73,t:95},
+  {l:79,t:50},{l:85,t:22},{l:91,t:68},{l:97,t:38},{l:6,t:78},{l:12,t:30},
+  {l:19,t:92},{l:25,t:15},{l:32,t:60},{l:38,t:45},{l:45,t:85},{l:51,t:20},
+  {l:58,t:72},{l:64,t:5},{l:70,t:48},{l:77,t:90},{l:83,t:25},{l:89,t:62},
+  {l:95,t:10},{l:2,t:40},{l:8,t:75},{l:16,t:52},{l:23,t:32},{l:29,t:80},
+  {l:36,t:18},{l:43,t:70},{l:49,t:42},{l:55,t:98},
+];
+
 export default function DesafioPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       {/* Hero do Desafio */}
       <div className="relative bg-gradient-to-br from-purple-900/70 to-indigo-900/70 border border-purple-700/40 rounded-3xl p-8 md:p-12 mb-12 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
-          {[...Array(40)].map((_, i) => (
+          {STARS_D.map((s, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${s.l}%`,
+                top: `${s.t}%`,
               }}
             />
           ))}
@@ -265,3 +275,4 @@ export default function DesafioPage() {
     </div>
   );
 }
+export const runtime = 'edge';
