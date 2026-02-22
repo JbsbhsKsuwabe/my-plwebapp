@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:cf": "npx @cloudflare/next-on-pages",
+    "build:cf": "npx @cloudflare/next-on-pages && node scripts/fix-cloudflare-routes.mjs",
     "start": "next start",
     "deploy": "npm run build:cf && wrangler pages deploy .vercel/output/static",
     "lint": "eslint",
-    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:build": "npx @cloudflare/next-on-pages && node scripts/fix-cloudflare-routes.mjs",
     "preview": "npm run pages:build && wrangler pages dev",
-    "deploy:prod": "npm run pages:build && wrangler pages deploy --project-name tem-luz-ai"
+    "deploy:prod": "npm run pages:build && wrangler pages deploy --project-name tem-luz-ai",
+    "verify": "node scripts/verify-home-route.mjs",
+    "verify:local": "node scripts/verify-home-route.mjs http://localhost:3000"
   },
   "dependencies": {
     "next": "^15.3.0",

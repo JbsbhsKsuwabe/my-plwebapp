@@ -68,7 +68,7 @@ export default function HomePage() {
           </div>
 
           {/* Mural de convites */}
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {/* Convite para Professores */}
             <div className="relative group bg-gradient-to-br from-blue-900/60 to-indigo-900/60 border border-blue-700/40 rounded-2xl p-6 hover:border-blue-500/60 transition-all hover:-translate-y-1">
               <div className="flex items-start gap-4 mb-4">
@@ -120,6 +120,34 @@ export default function HomePage() {
               >
                 🌠 Participar do Desafio
               </Link>
+            </div>
+
+            {/* Convite para o Público Geral — Pesquisa Rápida */}
+            <div className="relative group bg-gradient-to-br from-emerald-900/60 to-teal-900/60 border border-emerald-700/40 rounded-2xl p-6 hover:border-emerald-500/60 transition-all hover:-translate-y-1">
+              <div className="flex items-start gap-4 mb-4">
+                <span className="text-4xl">🌆</span>
+                <div>
+                  <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-medium px-2 py-1 rounded-full mb-2">
+                    PÚBLICO GERAL / PESQUISA RÁPIDA
+                  </span>
+                  <h2 className="text-white text-xl font-bold leading-tight">
+                    Você reconhece Poluição Luminosa na sua cidade?
+                  </h2>
+                </div>
+              </div>
+              <p className="text-slate-300 text-sm leading-relaxed mb-5">
+                Você já percebeu o céu alaranjado à noite, postes invadindo seu quarto ou holofotes
+                ofuscantes? Conte para a gente! Responda uma pesquisa rápida sobre como a poluição
+                luminosa aparece no seu dia a dia e quais impactos você já sentiu.
+              </p>
+              <a
+                href="https://forms.gle/RE1v5BR1RsJHCkVW9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2.5 rounded-xl transition-colors"
+              >
+                📝 Responder formulário
+              </a>
             </div>
           </div>
         </div>
