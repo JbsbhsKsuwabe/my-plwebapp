@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Página Principal -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Módulos (índice) -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Módulo 1 -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos/introducao</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Módulo 2 -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos/gastos-energia</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Módulo 3 -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos/observacoes-astronomicas</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Módulo 4 -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos/consequencias-socioambientais</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Módulo 5 -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos/cultura-ceu</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Módulo 6 -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos/leis-normas-medidas</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Módulo 7 -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/modulos/conclusoes-propostas</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Quiz Geral -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/quiz</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Desafio Fotográfico -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/desafio</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Para Professores -->
+  <url>
+    <loc>https://tem-luz-ai.pages.dev/para-professores</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
