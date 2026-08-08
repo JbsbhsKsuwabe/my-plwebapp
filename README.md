@@ -222,6 +222,7 @@ webapp/
 ## 📚 Fontes dos Documentos de Pesquisa
 
 Todo o conteúdo foi extraído exclusivamente dos seguintes arquivos do projeto:
+(Todos os Documentos podem ser encontrados na pasta "Joabe")
 
 1. **Apostila PL.docx** — Base principal de conteúdo dos 7 módulos
 2. **Revisão da PL FINALIZADO'.docx** — Revisão bibliográfica complementar
