@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentação de Engenharia de Software — Tem Luz Aí?</title>
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f172a;
+      --surface:   #1e293b;
+      --surface2:  #273548;
+      --border:    #334155;
+      --border2:   #475569;
+      --text:      #e2e8f0;
+      --text-muted:#94a3b8;
+      --text-dim:  #64748b;
+      --accent:    #6366f1;
+      --accent2:   #818cf8;
+      --accent3:   #a5b4fc;
+      --green:     #10b981;
+      --yellow:    #f59e0b;
+      --red:       #ef4444;
+      --cyan:      #06b6d4;
+      --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Courier New', 'Cascadia Code', monospace;
+      --font-serif:'Georgia', 'Times New Roman', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-serif);
+      font-size: 15px;
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════════════════ */
+    .wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       COVER PAGE
+    ═══════════════════════════════════════════════════════════ */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(99,102,241,0.15) 0%, transparent 60%);
+    }
+
+    .cover-inner { position: relative; z-index: 1; max-width: 720px; }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.4);
+      border-radius: 999px;
+      padding: 0.4rem 1.2rem;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--accent3);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .cover-title {
+      font-family: var(--font-sans);
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .cover-title span { color: var(--accent2); }
+
+    .cover-subtitle {
+      font-family: var(--font-sans);
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      text-align: left;
+    }
+
+    .cover-meta-item {
+      background: rgba(30,41,59,0.8);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+    }
+
+    .cover-meta-label {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    .cover-meta-value {
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .cover-url {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent3);
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       TABLE OF CONTENTS
+    ═══════════════════════════════════════════════════════════ */
+    .toc-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+    }
+
+    .toc-title {
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toc-list { list-style: none; }
+    .toc-list li { margin: 0.3rem 0; }
+
+    .toc-list > li > a {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0;
+      transition: color 0.2s;
+    }
+
+    .toc-list > li > a:hover { color: var(--accent2); }
+
+    .toc-sub { list-style: none; margin-left: 1.5rem; }
+    .toc-sub li { margin: 0.15rem 0; }
+    .toc-sub a {
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.15rem 0;
+      display: block;
+      transition: color 0.2s;
+    }
+    .toc-sub a:hover { color: var(--accent3); }
+
+    /* ═══════════════════════════════════════════════════════════
+       SECTION HEADINGS
+    ═══════════════════════════════════════════════════════════ */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 4rem 0 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-num {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 6px;
+      padding: 0.2rem 0.55rem;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    h2.section-title {
+      font-family: var(--font-sans);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    h3.subsection {
+      font-family: var(--font-sans);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 2.5rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h3.subsection::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 1.1em;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    h4.subsubsection {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BODY TEXT
+    ═══════════════════════════════════════════════════════════ */
+    p { margin-bottom: 1rem; color: var(--text); }
+    strong { color: #fff; font-weight: 700; }
+    em { color: var(--accent3); font-style: italic; }
+
+    /* ═══════════════════════════════════════════════════════════
+       TABLES
+    ═══════════════════════════════════════════════════════════ */
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+    }
+
+    thead th {
+      background: var(--surface2);
+      color: var(--accent3);
+      font-weight: 700;
+      text-align: left;
+      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--border);
+      letter-spacing: 0.03em;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(99,102,241,0.04); }
+
+    tbody td {
+      padding: 0.6rem 0.9rem;
+      color: var(--text);
+      border: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    tbody td:first-child {
+      font-weight: 600;
+      color: var(--accent3);
+      white-space: nowrap;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       CALLOUTS / CARDS
+    ═══════════════════════════════════════════════════════════ */
+    .callout {
+      border-radius: 10px;
+      padding: 1.1rem 1.4rem;
+      margin: 1.2rem 0;
+      border-left: 4px solid;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+    }
+
+    .callout-info {
+      background: rgba(99,102,241,0.08);
+      border-color: var(--accent);
+      color: var(--accent3);
+    }
+
+    .callout-warn {
+      background: rgba(245,158,11,0.08);
+      border-color: var(--yellow);
+      color: #fcd34d;
+    }
+
+    .callout-success {
+      background: rgba(16,185,129,0.08);
+      border-color: var(--green);
+      color: #6ee7b7;
+    }
+
+    .callout-error {
+      background: rgba(239,68,68,0.08);
+      border-color: var(--red);
+      color: #fca5a5;
+    }
+
+    .callout strong { color: inherit; }
+
+    /* ═══════════════════════════════════════════════════════════
+       CODE BLOCKS
+    ═══════════════════════════════════════════════════════════ */
+    pre {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: #c9d1d9;
+    }
+
+    .inline-code {
+      background: var(--surface2);
+      color: var(--accent3);
+      font-family: var(--font-mono);
+      font-size: 0.8em;
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BADGES / PILLS
+    ═══════════════════════════════════════════════════════════ */
+    .badge {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge-alta   { background: rgba(239,68,68,0.15);  color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+    .badge-media  { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-baixa  { background: rgba(99,102,241,0.15); color: var(--accent3); border: 1px solid rgba(99,102,241,0.3); }
+    .badge-ok     { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-pend   { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-server { background: rgba(6,182,212,0.15);  color: #67e8f9; border: 1px solid rgba(6,182,212,0.3); }
+    .badge-client { background: rgba(168,85,247,0.15); color: #d8b4fe; border: 1px solid rgba(168,85,247,0.3); }
+
+    /* ═══════════════════════════════════════════════════════════
+       DEFINITION LIST
+    ═══════════════════════════════════════════════════════════ */
+    .def-list { margin: 1rem 0; }
+    .def-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 0.5rem 1rem;
+      margin-bottom: 0.6rem;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .def-term {
+      color: var(--accent3);
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .def-desc { color: var(--text-muted); }
+
+    /* ═══════════════════════════════════════════════════════════
+       FLOW STEP LIST
+    ═══════════════════════════════════════════════════════════ */
+    .flow-list { list-style: none; counter-reset: flow-counter; margin: 1rem 0; }
+    .flow-list li {
+      counter-increment: flow-counter;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 0.7rem;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .flow-list li::before {
+      content: counter(flow-counter);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.7rem;
+      min-width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       UL / OL
+    ═══════════════════════════════════════════════════════════ */
+    ul.doc-list, ol.doc-list {
+      margin: 0.75rem 0 0.75rem 1.4rem;
+      color: var(--text);
+    }
+
+    ul.doc-list li, ol.doc-list li {
+      margin-bottom: 0.4rem;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HIGHLIGHT BOX
+    ═══════════════════════════════════════════════════════════ */
+    .highlight-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1.6rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box-title {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent2);
+      margin-bottom: 0.8rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       USE CASE CARD
+    ═══════════════════════════════════════════════════════════ */
+    .uc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1.6rem;
+      margin: 1rem 0;
+    }
+
+    .uc-id {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 6px;
+      padding: 0.15rem 0.5rem;
+      display: inline-block;
+      margin-bottom: 0.7rem;
+    }
+
+    .uc-title {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+
+    .uc-row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 0.3rem 1rem;
+      margin-bottom: 0.4rem;
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+    }
+
+    .uc-label {
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      padding-top: 0.15rem;
+    }
+
+    .uc-value { color: var(--text); }
+
+    /* ═══════════════════════════════════════════════════════════
+       ARCHITECTURE DIAGRAM
+    ═══════════════════════════════════════════════════════════ */
+    .arch-diagram {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #c9d1d9;
+      line-height: 2;
+      overflow-x: auto;
+    }
+
+    .arch-diagram .layer-title { color: var(--accent2); font-weight: 700; }
+    .arch-diagram .layer-tech  { color: #6ee7b7; }
+    .arch-diagram .layer-arrow { color: var(--text-dim); }
+
+    /* ═══════════════════════════════════════════════════════════
+       DIVIDER
+    ═══════════════════════════════════════════════════════════ */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    .doc-footer {
+      margin-top: 5rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       PRINT
+    ═══════════════════════════════════════════════════════════ */
+    @media print {
+      body { background: #fff; color: #111; }
+      .cover { background: #fff; color: #111; min-height: auto; }
+      a { color: inherit; }
+    }
+
+    @media (max-width: 640px) {
+      .cover-title { font-size: 1.9rem; }
+      .cover-meta  { grid-template-columns: 1fr; }
+      .uc-row      { grid-template-columns: 1fr; }
+      .def-item    { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║  CAPA                                                    ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">🌠 Projeto CientificAção · IFBA · UFBA</div>
+
+    <h1 class="cover-title">
+      Documentação de<br>
+      <span>Engenharia de Software</span>
+    </h1>
+
+    <p class="cover-subtitle">
+      Sistema <em>"Tem Luz Aí?"</em> — Site Educacional sobre Poluição Luminosa<br>
+      Da captura de requisitos à implantação em produção
+    </p>
+
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Versão do Documento</div>
+        <div class="cover-meta-value">1.0.0</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Data</div>
+        <div class="cover-meta-value">Julho de 2025</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Desenvolvedor / Pesquisador</div>
+        <div class="cover-meta-value">Joabe Carmo de Santana</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Orientador</div>
+        <div class="cover-meta-value">Gorhan Freitas Noronha (UFBA)</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Coorientadora</div>
+        <div class="cover-meta-value">Júlia Oliveira dos Santos (IFBA)</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Instituição</div>
+        <div class="cover-meta-value">IFBA / CientificAção</div>
+      </div>
+    </div>
+
+    <a class="cover-url" href="https://tem-luz-ai.pages.dev" target="_blank">
+      🌐 https://tem-luz-ai.pages.dev
+    </a>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║  CORPO DO DOCUMENTO                                      ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<div class="wrapper">
+
+  <!-- ── ÍNDICE ───────────────────────────────────────────── -->
+  <div class="toc-section" id="toc">
+    <div class="toc-title">📋 Índice</div>
+    <ul class="toc-list">
+      <li>
+        <a href="#sec1">1. Introdução</a>
+        <ul class="toc-sub">
+          <li><a href="#sec1-1">1.1 Propósito do Documento</a></li>
+          <li><a href="#sec1-2">1.2 Escopo do Projeto</a></li>
+          <li><a href="#sec1-3">1.3 Definições e Acrônimos</a></li>
+          <li><a href="#sec1-4">1.4 Visão Geral do Documento</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#sec2">2. Captura de Requisitos</a>
+        <ul class="toc-sub">
+          <li><a href="#sec2-1">2.1 Elicitação de Requisitos</a></li>
+          <li><a href="#sec2-2">2.2 Requisitos Funcionais</a></li>
+          <li><a href="#sec2-3">2.3 Requisitos Não-Funcionais</a></li>
+          <li><a href="#sec2-4">2.4 Regras de Negócio</a></li>
+          <li><a href="#sec2-5">2.5 Restrições do Projeto</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#sec3">3. Modelagem do Sistema</a>
+        <ul class="toc-sub">
+          <li><a href="#sec3-1">3.1 Diagrama de Casos de Uso</a></li>
+          <li><a href="#sec3-2">3.2 Especificação de Casos de Uso</a></li>
+          <li><a href="#sec3-3">3.3 Diagrama de Classes / Componentes</a></li>
+          <li><a href="#sec3-4">3.4 Modelo de Dados</a></li>
+          <li><a href="#sec3-5">3.5 Arquitetura do Sistema</a></li>
+          <li><a href="#sec3-6">3.6 Diagrama de Sequência — Fluxo Quiz</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#sec4">4. Processo de Desenvolvimento</a>
+        <ul class="toc-sub">
+          <li><a href="#sec4-1">4.1 Metodologia</a></li>
+          <li><a href="#sec4-2">4.2 Cronograma por Iterações</a></li>
+          <li><a href="#sec4-3">4.3 Gestão de Configuração (Git)</a></li>
+          <li><a href="#sec4-4">4.4 Pipeline de CI/CD</a></li>
+          <li><a href="#sec4-5">4.5 Estratégia de Testes</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#sec5">5. Construção do Sistema</a>
+        <ul class="toc-sub">
+          <li><a href="#sec5-1">5.1 Estrutura de Arquivos</a></li>
+          <li><a href="#sec5-2">5.2 Decisões de Design de Código</a></li>
+          <li><a href="#sec5-3">5.3 Análise Detalhada dos Componentes Críticos</a></li>
+          <li><a href="#sec5-4">5.4 Tecnologias e Versões</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#sec6">6. Implementação e Deploy</a>
+        <ul class="toc-sub">
+          <li><a href="#sec6-1">6.1 Ambiente de Produção</a></li>
+          <li><a href="#sec6-2">6.2 Pipeline de Build</a></li>
+          <li><a href="#sec6-3">6.3 Problemas, Causas e Soluções</a></li>
+          <li><a href="#sec6-4">6.4 Configuração de SEO e Indexação</a></li>
+          <li><a href="#sec6-5">6.5 Matriz de Rastreabilidade</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#sec7">7. Referências</a>
+      </li>
+    </ul>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       1. INTRODUÇÃO
+  ════════════════════════════════════════════════════════════ -->
+  <div id="sec1" class="section-header">
+    <span class="section-num">SEC. 1</span>
+    <h2 class="section-title">Introdução</h2>
+  </div>
+
+  <h3 class="subsection" id="sec1-1">1.1 Propósito do Documento</h3>
+
+  <p>
+    Este documento constitui a <strong>Documentação de Engenharia de Software</strong> do sistema <em>"Tem Luz Aí?"</em>,
+    desenvolvido como parte do projeto de pesquisa científica <em>CientificAção</em>, vinculado ao
+    Instituto Federal da Bahia (IFBA). O documento tem por objetivo registrar formalmente todos os
+    artefatos de engenharia produzidos ao longo do ciclo de vida do software, desde a elicitação
+    de requisitos até a implantação em ambiente de produção.
+  </p>
+
+  <p>
+    Seguindo os fundamentos estabelecidos por Sommerville (2011) e Pressman (2016), a documentação
+    cobre as etapas de <strong>análise de requisitos</strong>, <strong>modelagem</strong>,
+    <strong>projeto de software</strong>, <strong>construção</strong> e <strong>implantação</strong>,
+    provendo uma visão técnica abrangente que permite a manutenção, evolução e auditoria futura do sistema.
+  </p>
+
+  <div class="callout callout-info">
+    <strong>Audiência-alvo:</strong> este documento destina-se a desenvolvedores, orientadores, avaliadores
+    de projetos de pesquisa e qualquer parte interessada que necessite compreender a arquitetura,
+    as decisões técnicas e o processo de engenharia do sistema.
+  </div>
+
+  <h3 class="subsection" id="sec1-2">1.2 Escopo do Projeto</h3>
+
+  <p>
+    O sistema <em>"Tem Luz Aí?"</em> é um <strong>site educacional público</strong> sobre
+    <strong>Poluição Luminosa (PL)</strong>, concebido como ferramenta de divulgação científica e
+    engajamento da comunidade escolar e do público geral. O projeto está inserido no programa
+    <em>CientificAção</em> do IFBA, sob orientação da Universidade Federal da Bahia (UFBA).
+  </p>
+
+  <p>O escopo funcional do sistema abrange:</p>
+
+  <ul class="doc-list">
+    <li>Disponibilização de <strong>7 módulos de conteúdo educacional</strong> sobre Poluição Luminosa,
+    cada um com texto principal, glossário técnico, exemplos práticos, mini-revisão e quiz interativo.</li>
+    <li><strong>Quiz Geral</strong> com 20 questões cobrindo os 7 módulos.</li>
+    <li><strong>Rastreamento de progresso</strong> do usuário por módulo, persisitido localmente no browser.</li>
+    <li><strong>Desafio Fotográfico</strong> do Céu Noturno com tutorial de fotografia noturna e envio por formulário externo.</li>
+    <li><strong>Materiais para professores</strong> com conteúdo didático e orientações pedagógicas.</li>
+    <li><strong>Formulários de pesquisa</strong> para professores e público geral (externos, via Google Forms).</li>
+    <li><strong>SEO completo</strong> para indexação pelo Google (robots.txt, sitemap.xml, metadados, Schema.org).</li>
+  </ul>
+
+  <p>
+    O sistema <strong>não</strong> possui backend persistente próprio, banco de dados remoto,
+    autenticação de usuários, nem coleta de dados pessoais. Toda a persistência de estado do usuário
+    é realizada exclusivamente no <span class="inline-code">localStorage</span> do browser.
+  </p>
+
+  <h3 class="subsection" id="sec1-3">1.3 Definições e Acrônimos</h3>
+
+  <div class="def-list">
+    <div class="def-item"><span class="def-term">PL</span><span class="def-desc">Poluição Luminosa — emissão excessiva e descontrolada de luz artificial para o ambiente</span></div>
+    <div class="def-item"><span class="def-term">CF / CFP</span><span class="def-desc">Cloudflare / Cloudflare Pages — plataforma de hospedagem edge utilizada no projeto</span></div>
+    <div class="def-item"><span class="def-term">CW</span><span class="def-desc">Cloudflare Workers — runtime serverless edge da Cloudflare</span></div>
+    <div class="def-item"><span class="def-term">NxOP</span><span class="def-desc">@cloudflare/next-on-pages — adaptador que converte o output do Next.js para Cloudflare Workers</span></div>
+    <div class="def-item"><span class="def-term">SSR</span><span class="def-desc">Server-Side Rendering — renderização no servidor a cada requisição</span></div>
+    <div class="def-item"><span class="def-term">SSG</span><span class="def-desc">Static Site Generation — pré-geração de páginas em tempo de build</span></div>
+    <div class="def-item"><span class="def-term">PoP</span><span class="def-desc">Point of Presence — ponto de presença da CDN Cloudflare (200+ globais)</span></div>
+    <div class="def-item"><span class="def-term">JAMstack</span><span class="def-desc">JavaScript + APIs + Markup — arquitetura moderna de aplicações web estáticas</span></div>
+    <div class="def-item"><span class="def-term">OOM</span><span class="def-desc">Out of Memory — erro de esgotamento de memória RAM durante o build</span></div>
+    <div class="def-item"><span class="def-term">CI/CD</span><span class="def-desc">Continuous Integration / Continuous Deployment — integração e entrega contínua via GitHub Actions</span></div>
+    <div class="def-item"><span class="def-term">SEO</span><span class="def-desc">Search Engine Optimization — otimização para mecanismos de busca</span></div>
+    <div class="def-item"><span class="def-term">JSON-LD</span><span class="def-desc">JSON for Linked Data — formato para dados estruturados Schema.org injetados no HTML</span></div>
+    <div class="def-item"><span class="def-term">OG</span><span class="def-desc">Open Graph — protocolo de metadados para compartilhamento em redes sociais</span></div>
+    <div class="def-item"><span class="def-term">RF</span><span class="def-desc">Requisito Funcional</span></div>
+    <div class="def-item"><span class="def-term">RNF</span><span class="def-desc">Requisito Não-Funcional</span></div>
+    <div class="def-item"><span class="def-term">RN</span><span class="def-desc">Regra de Negócio</span></div>
+    <div class="def-item"><span class="def-term">UC</span><span class="def-desc">Use Case — Caso de Uso</span></div>
+    <div class="def-item"><span class="def-term">IFBA</span><span class="def-desc">Instituto Federal de Educação, Ciência e Tecnologia da Bahia</span></div>
+    <div class="def-item"><span class="def-term">UFBA</span><span class="def-desc">Universidade Federal da Bahia</span></div>
+    <div class="def-item"><span class="def-term">WCAG</span><span class="def-desc">Web Content Accessibility Guidelines — diretrizes de acessibilidade web</span></div>
+    <div class="def-item"><span class="def-term">BNCC</span><span class="def-desc">Base Nacional Comum Curricular — referência curricular brasileira</span></div>
+  </div>
+
+  <h3 class="subsection" id="sec1-4">1.4 Visão Geral do Documento</h3>
+
+  <p>
+    O documento está organizado em sete seções principais que cobrem as fases clássicas do ciclo de vida
+    do software conforme o modelo prescritivo de Pressman (2016) e o processo unificado descrito por
+    Sommerville (2011):
+  </p>
+
+  <ol class="doc-list">
+    <li><strong>Introdução</strong> — contexto, escopo, glossário e organização do documento.</li>
+    <li><strong>Captura de Requisitos</strong> — elicitação, requisitos funcionais e não-funcionais, regras de negócio e restrições.</li>
+    <li><strong>Modelagem do Sistema</strong> — casos de uso, diagrama de classes/componentes, modelo de dados, arquitetura e diagrama de sequência.</li>
+    <li><strong>Processo de Desenvolvimento</strong> — metodologia, cronograma, gestão de configuração, CI/CD e testes.</li>
+    <li><strong>Construção do Sistema</strong> — estrutura de arquivos, decisões de design, análise de componentes e stack tecnológica.</li>
+    <li><strong>Implementação e Deploy</strong> — ambiente de produção, pipeline de build, lições aprendidas, SEO e rastreabilidade.</li>
+    <li><strong>Referências</strong> — fontes bibliográficas e técnicas consultadas.</li>
+  </ol>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       2. CAPTURA DE REQUISITOS
+  ════════════════════════════════════════════════════════════ -->
+  <div id="sec2" class="section-header">
+    <span class="section-num">SEC. 2</span>
+    <h2 class="section-title">Captura de Requisitos</h2>
+  </div>
+
+  <h3 class="subsection" id="sec2-1">2.1 Elicitação de Requisitos</h3>
+
+  <p>
+    A elicitação de requisitos do sistema <em>"Tem Luz Aí?"</em> foi conduzida por meio de três
+    técnicas complementares, conforme recomendado pela literatura de engenharia de requisitos
+    (Sommerville, 2011, cap. 4):
+  </p>
+
+  <div class="highlight-box">
+    <div class="highlight-box-title">Técnicas de Elicitação Utilizadas</div>
+
+    <h4 class="subsubsection">1. Análise de Documentos</h4>
+    <p>
+      O principal artefato de entrada foi a <strong>Apostila de Poluição Luminosa</strong>, documento
+      de pesquisa produzido pelo próprio pesquisador Joabe Carmo de Santana no contexto do projeto
+      CientificAção/IFBA. A apostila contém o corpus completo de conteúdo educacional sobre PL —
+      conceitos, tipologia, impactos ambientais e sociais, leis e propostas — que foi integralmente
+      digitalizado e estruturado como os 7 módulos do sistema.
+    </p>
+
+    <h4 class="subsubsection">2. Entrevistas Semiestruturadas com Professores</h4>
+    <p>
+      Professores da rede de ensino foram identificados como um dos públicos-alvo estratégicos do
+      projeto. O site prevê a coleta de dados sobre o nível de familiaridade dos docentes com a
+      Poluição Luminosa e a percepção deles sobre a relevância do tema no currículo escolar. Esta
+      demanda resultou no card "Professor(a), participe da pesquisa" na Home e na rota
+      <span class="inline-code">/para-professores</span> com materiais didáticos alinhados à BNCC.
+    </p>
+
+    <h4 class="subsubsection">3. Pesquisa com Público Geral</h4>
+    <p>
+      Reconhecendo que a PL afeta qualquer cidadão urbano, identificou-se a necessidade de engajar
+      o público geral — não apenas estudantes ou professores. Isto originou o terceiro card do mural
+      ("Você reconhece Poluição Luminosa na sua cidade?") com link para formulário de pesquisa
+      rápida via Google Forms.
+    </p>
+  </div>
+
+  <h3 class="subsection" id="sec2-2">2.2 Requisitos Funcionais</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descrição</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>RF01</td>
+          <td>O sistema deve exibir conteúdo educacional sobre Poluição Luminosa organizado em <strong>7 módulos temáticos</strong> com texto, glossário, exemplos, revisão e quiz.</td>
+          <td><span class="badge badge-alta">Alta</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF02</td>
+          <td>Cada módulo deve conter: texto principal com renderização Markdown, glossário técnico com termos e definições, exemplos práticos numerados, mini-revisão e quiz interativo por módulo.</td>
+          <td><span class="badge badge-alta">Alta</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF03</td>
+          <td>O sistema deve fornecer um <strong>Quiz Geral</strong> com 20 questões (múltipla escolha e verdadeiro/falso) cobrindo todos os 7 módulos, com navegação por questão, índice e modo revisão pós-envio.</td>
+          <td><span class="badge badge-alta">Alta</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF04</td>
+          <td>O sistema deve rastrear e exibir o <strong>progresso do usuário</strong> por módulo, calculando percentual de conclusão e exibindo score individual de cada quiz via localStorage.</td>
+          <td><span class="badge badge-alta">Alta</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF05</td>
+          <td>A Home deve apresentar um <strong>mural de convites</strong> com 3 cards responsivos: (1) Pesquisa para Professores, (2) Desafio Fotográfico, (3) Pesquisa para Público Geral.</td>
+          <td><span class="badge badge-alta">Alta</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF06</td>
+          <td>O sistema deve exibir uma <strong>navbar fixa</strong> (top-0) com links para: Home, Desafio, Módulos, Quiz Geral, Para Professores — com versão desktop e menu mobile.</td>
+          <td><span class="badge badge-alta">Alta</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF07</td>
+          <td>A rota <span class="inline-code">/desafio</span> deve apresentar <strong>tutorial de fotografia noturna</strong> (modo PRO, apps alternativos, edição), critérios de avaliação e política de uso das fotos.</td>
+          <td><span class="badge badge-media">Média</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF08</td>
+          <td>A rota <span class="inline-code">/para-professores</span> deve disponibilizar <strong>materiais didáticos</strong> por módulo, incluindo orientações pedagógicas, perguntas de revisão com gabarito, atividade prática e conexão BNCC.</td>
+          <td><span class="badge badge-media">Média</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF09</td>
+          <td>O sistema deve <strong>redirecionar participantes</strong> do desafio fotográfico e das pesquisas para formulários externos (Google Forms), abrindo em nova aba com atributos <span class="inline-code">target="_blank" rel="noopener noreferrer"</span>.</td>
+          <td><span class="badge badge-alta">Alta</span></td>
+          <td><span class="badge badge-ok">✅ Implementado</span></td>
+        </tr>
+        <tr>
+          <td>RF10</td>
+          <td>O sistema deve gerar um <strong>sitemap.xml dinâmico</strong> via Next.js App Router (<span class="inline-code">app/sitemap.ts</span>) cobrindo as 5 rotas estáticas e as 7 rotas de módulos (12 URLs total).</td>
+          <td><span class="badge badge-media">Média</span></td>
+          <td><span class="badge badge-pend">⏳ Deploy Pendente</span></td>
+        </tr>
+        <tr>
+          <td>RF11</td>
+          <td>O sistema deve servir um arquivo <span class="inline-code">robots.txt</span> permitindo indexação completa pelo Googlebot e referenciando o sitemap.xml.</td>
+          <td><span class="badge badge-media">Média</span></td>
+          <td><span class="badge badge-pend">⏳ Deploy Pendente</span></td>
+        </tr>
+        <tr>
+          <td>RF12</td>
+          <td>O sistema deve incluir <strong>metadados SEO completos</strong>: Open Graph, Twitter Card, canonical URL, robots meta, keywords, Schema.org JSON-LD (WebSite e EducationalOrganization).</td>
+          <td><span class="badge badge-media">Média</span></td>
+          <td><span class="badge badge-pend">⏳ Deploy Pendente</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec2-3">2.3 Requisitos Não-Funcionais</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Categoria</th><th>Descrição</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>RNF01</td>
+          <td>Desempenho</td>
+          <td>Tempo de resposta médio inferior a <strong>200 ms</strong>, garantido pelo edge runtime da Cloudflare (processamento no PoP mais próximo do usuário final).</td>
+        </tr>
+        <tr>
+          <td>RNF02</td>
+          <td>Disponibilidade</td>
+          <td>Disponibilidade de <strong>99,9%</strong> (SLA da Cloudflare Pages). Ausência de single point of failure — distribuição global em 200+ PoPs.</td>
+        </tr>
+        <tr>
+          <td>RNF03</td>
+          <td>Compatibilidade</td>
+          <td>Suporte aos navegadores Chrome, Firefox, Safari e Edge em versões dos últimos 2 anos. Design <strong>mobile-first</strong> com breakpoints responsivos (sm, md, lg via Tailwind v4).</td>
+        </tr>
+        <tr>
+          <td>RNF04</td>
+          <td>Segurança</td>
+          <td><strong>HTTPS obrigatório</strong> (Cloudflare SSL automático). Ausência de cookies de rastreamento de terceiros. Dados de progresso apenas no cliente (localStorage). Links externos com <span class="inline-code">rel="noopener noreferrer"</span>.</td>
+        </tr>
+        <tr>
+          <td>RNF05</td>
+          <td>Manutenibilidade</td>
+          <td>Código em <strong>TypeScript estrito</strong> (<span class="inline-code">strict: true</span> no tsconfig). Componentes reutilizáveis seguindo convenções do Next.js App Router. Nomenclatura semântica e consistente.</td>
+        </tr>
+        <tr>
+          <td>RNF06</td>
+          <td>Acessibilidade</td>
+          <td>Uso de <strong>tags semânticas HTML5</strong> (<span class="inline-code">&lt;nav&gt;</span>, <span class="inline-code">&lt;main&gt;</span>, <span class="inline-code">&lt;article&gt;</span>, <span class="inline-code">&lt;section&gt;</span>, <span class="inline-code">&lt;footer&gt;</span>). Contraste de texto ≥ 4.5:1 (WCAG AA) garantido pela paleta escura do Tailwind.</td>
+        </tr>
+        <tr>
+          <td>RNF07</td>
+          <td>SEO</td>
+          <td>Conteúdo <strong>indexável pelo Google</strong>: Open Graph, Schema.org JSON-LD, sitemap XML, metadados por página, canonical URL. Meta <span class="inline-code">robots: index, follow</span> explícito.</td>
+        </tr>
+        <tr>
+          <td>RNF08</td>
+          <td>Portabilidade / Distribuição</td>
+          <td>Distribuição edge global em <strong>200+ pontos de presença</strong> da Cloudflare. Conteúdo disponível com baixa latência para usuários no Brasil, América do Norte e Europa.</td>
+        </tr>
+        <tr>
+          <td>RNF09</td>
+          <td>Privacidade</td>
+          <td><strong>Sem coleta de dados pessoais</strong> no site. Formulários de pesquisa são hospedados externamente no Google Forms. O sistema não persiste dados de usuários em nenhum servidor.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec2-4">2.4 Regras de Negócio</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Descrição</th><th>Impacto Técnico</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>RN01</td>
+          <td>A <strong>progressão do usuário é exclusivamente client-side</strong>. Não existe autenticação, login ou sessão de servidor.</td>
+          <td>Uso de <span class="inline-code">localStorage</span> no componente <span class="inline-code">ProgressoBar.tsx</span> e <span class="inline-code">Quiz.tsx</span> ("use client").</td>
+        </tr>
+        <tr>
+          <td>RN02</td>
+          <td>O <strong>conteúdo educacional</strong> deve ser baseado estritamente na Apostila PL e materiais oficiais do projeto CientificAção/IFBA. Nenhuma informação deve ser inventada ou extraída de fontes externas não validadas.</td>
+          <td>Conteúdo codificado diretamente em <span class="inline-code">data/modulos.ts</span> (~102KB), mantendo a integridade científica.</td>
+        </tr>
+        <tr>
+          <td>RN03</td>
+          <td>Os <strong>formulários de pesquisa</strong> (professores, público geral, desafio fotográfico) são hospedados externamente no Google Forms. Os dados coletados são gerenciados fora do sistema.</td>
+          <td>Implementado com links <span class="inline-code">&lt;a href="..."&gt;</span> para URLs Google Forms, sem iframe ou API de coleta de dados.</td>
+        </tr>
+        <tr>
+          <td>RN04</td>
+          <td>O site é de <strong>acesso público irrestrito</strong>, sem autenticação, paywall ou restrição regional.</td>
+          <td>Cloudflare Pages sem regras de acesso. <span class="inline-code">robots.txt</span> com <span class="inline-code">Allow: /</span> para todos os crawlers.</td>
+        </tr>
+        <tr>
+          <td>RN05</td>
+          <td>O <strong>edge runtime do Cloudflare Workers é obrigatório</strong> para todas as páginas, proscrevendo o uso de APIs Node.js no servidor.</td>
+          <td><span class="inline-code">export const runtime = 'edge'</span> em todas as páginas. Proibição de <span class="inline-code">fs</span>, <span class="inline-code">path</span>, <span class="inline-code">crypto</span> Node.js, <span class="inline-code">next/font/google</span>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec2-5">2.5 Restrições do Projeto</h3>
+
+  <div class="callout callout-warn">
+    <strong>Restrição de Plataforma:</strong> O sistema deve ser implantado exclusivamente no
+    Cloudflare Pages/Workers. Qualquer dependência ou padrão de código incompatível com o edge
+    runtime é vedado — incluindo APIs Node.js (<span class="inline-code">fs</span>, <span class="inline-code">path</span>,
+    <span class="inline-code">child_process</span>), bibliotecas que requerem filesystem em runtime,
+    e o módulo <span class="inline-code">next/font/google</span>.
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>Restrição de Build (OOM):</strong> O sandbox de desenvolvimento (~680MB de RAM disponível)
+    é insuficiente para executar o <span class="inline-code">next build</span> seguido do
+    <span class="inline-code">@cloudflare/next-on-pages</span>, que consome entre 600–800MB de RSS.
+    O build deve ser executado obrigatoriamente via <strong>GitHub Actions</strong> (ubuntu-latest, 7GB RAM)
+    com <span class="inline-code">NODE_OPTIONS=--max-old-space-size=4096</span>.
+  </div>
+
+  <ul class="doc-list">
+    <li><strong>Framework:</strong> Next.js 15.3.0 com App Router (downgrade necessário — versão 16 incompatível com @cloudflare/next-on-pages na época do projeto).</li>
+    <li><strong>Adapter:</strong> <span class="inline-code">@cloudflare/next-on-pages</span> v1.13.16 para conversão do output Vercel em Workers format.</li>
+    <li><strong>APIs Externas:</strong> Apenas Google Forms para coleta de dados de pesquisa. Sem backend próprio, sem banco de dados remoto.</li>
+    <li><strong>Linguagem:</strong> TypeScript 5.x com tipagem estrita. Proibição de <span class="inline-code">any</span> implícito.</li>
+    <li><strong>Estilização:</strong> Tailwind CSS v4 exclusivamente (sem CSS-in-JS, sem styled-components). Fontes web carregadas via CSS system stack (<span class="inline-code">font-sans</span>).</li>
+  </ul>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       3. MODELAGEM DO SISTEMA
+  ════════════════════════════════════════════════════════════ -->
+  <div id="sec3" class="section-header">
+    <span class="section-num">SEC. 3</span>
+    <h2 class="section-title">Modelagem do Sistema</h2>
+  </div>
+
+  <h3 class="subsection" id="sec3-1">3.1 Diagrama de Casos de Uso</h3>
+
+  <p>
+    O sistema possui quatro atores principais: <strong>Estudante</strong> (usuário principal do
+    conteúdo educacional), <strong>Professor</strong> (foco das pesquisas e materiais didáticos),
+    <strong>Público Geral</strong> (participante da pesquisa rápida sobre PL no cotidiano) e
+    <strong>Googlebot</strong> (crawler de indexação). Todos os atores humanos interagem com o
+    sistema de forma anônima e sem autenticação.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Caso de Uso</th><th>Ator(es)</th><th>Descrição Resumida</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>UC01</td><td>Navegar pelos Módulos</td><td>Estudante, Professor, Público Geral</td><td>Acessar a lista de módulos e entrar em um módulo específico pelo slug da URL.</td></tr>
+        <tr><td>UC02</td><td>Realizar Quiz de Módulo</td><td>Estudante, Professor</td><td>Responder as questões do quiz de um módulo, navegar entre elas e obter resultado com revisão e gabarito.</td></tr>
+        <tr><td>UC03</td><td>Realizar Quiz Geral</td><td>Estudante, Professor</td><td>Responder 20 questões do quiz geral cobrindo todos os módulos, com modo revisão ao final.</td></tr>
+        <tr><td>UC04</td><td>Visualizar Progresso</td><td>Estudante, Professor</td><td>Ver barra de progresso com percentual de quizzes concluídos, scores individuais por módulo e link rápido para cada módulo.</td></tr>
+        <tr><td>UC05</td><td>Participar do Desafio Fotográfico</td><td>Público Geral, Estudante</td><td>Acessar tutorial de fotografia noturna e enviar foto pelo formulário Google Forms externo.</td></tr>
+        <tr><td>UC06</td><td>Responder Pesquisa de Professores</td><td>Professor</td><td>Clicar no CTA da Home para acessar formulário semiestruturado sobre familiaridade com PL no ensino.</td></tr>
+        <tr><td>UC07</td><td>Responder Formulário do Público Geral</td><td>Público Geral</td><td>Clicar no card "Você reconhece PL na sua cidade?" para responder pesquisa rápida via Google Forms.</td></tr>
+        <tr><td>UC08</td><td>Acessar Materiais para Professores</td><td>Professor</td><td>Navegar pela rota /para-professores para acessar orientações didáticas, gabaritos e conexões com a BNCC por módulo.</td></tr>
+        <tr><td>UC09</td><td>Indexar Conteúdo</td><td>Googlebot</td><td>Ler robots.txt, acessar sitemap.xml com 12 URLs, rastrear e indexar as páginas com metadados SEO e JSON-LD.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec3-2">3.2 Especificação de Casos de Uso</h3>
+
+  <div class="uc-card">
+    <div class="uc-id">UC02</div>
+    <div class="uc-title">Realizar Quiz de Módulo</div>
+    <div class="uc-row"><span class="uc-label">Atores</span><span class="uc-value">Estudante, Professor</span></div>
+    <div class="uc-row"><span class="uc-label">Pré-condição</span><span class="uc-value">Usuário está na página <span class="inline-code">/modulos/[slug]</span>; componente Quiz renderizado.</span></div>
+    <div class="uc-row"><span class="uc-label">Pós-condição</span><span class="uc-value">Score salvo em <span class="inline-code">localStorage["tem_luz_ai_progresso"][quiz_modulo_N]</span> com score, total e data ISO 8601.</span></div>
+    <div class="uc-row" style="margin-top:0.8rem"><span class="uc-label">Fluxo Principal</span><span class="uc-value">
+      <ol class="doc-list">
+        <li>Sistema exibe questão 1 de N com enunciado, alternativas e barra de progresso superior.</li>
+        <li>Usuário seleciona uma alternativa (múltipla escolha) ou botão Verdadeiro/Falso.</li>
+        <li><span class="inline-code">handleResposta()</span> atualiza estado <span class="inline-code">respostas[questao.id]</span>.</li>
+        <li>Usuário clica "Próxima →" — <span class="inline-code">questaoAtual</span> incrementa.</li>
+        <li>Passos 2–4 repetem-se para as N questões do módulo.</li>
+        <li>Na última questão, botão "✅ Finalizar Quiz" fica disponível (apenas quando todas respondidas).</li>
+        <li>Usuário clica "Finalizar Quiz" → <span class="inline-code">handleEnviar()</span> chamado.</li>
+        <li><span class="inline-code">calcularScore()</span> conta respostas corretas. Estado <span class="inline-code">enviado = true</span>, <span class="inline-code">modoRevisao = true</span>.</li>
+        <li>Sistema persiste progresso no <span class="inline-code">localStorage</span>.</li>
+        <li>Sistema exibe painel de resultado (score/total, percentual, feedback textual) + revisão de todas as questões com gabarito colorido e explicação.</li>
+      </ol>
+    </span></div>
+    <div class="uc-row"><span class="uc-label">Fluxo Alternativo</span><span class="uc-value">Usuário usa o mini-índice de questões (botões numerados na base do quiz) para navegar não-linearmente. Questões respondidas ficam marcadas em verde, questão atual em azul.</span></div>
+    <div class="uc-row"><span class="uc-label">Regras</span><span class="uc-value">RN01 (progresso client-side), RN02 (questões da apostila)</span></div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-id">UC04</div>
+    <div class="uc-title">Visualizar Progresso</div>
+    <div class="uc-row"><span class="uc-label">Atores</span><span class="uc-value">Estudante, Professor</span></div>
+    <div class="uc-row"><span class="uc-label">Pré-condição</span><span class="uc-value">Usuário completou ao menos um quiz. Componente <span class="inline-code">ProgressoBar</span> montado na sidebar da Home.</span></div>
+    <div class="uc-row"><span class="uc-label">Pós-condição</span><span class="uc-value">Barra de progresso exibida com percentual calculado e grid de módulos com scores.</span></div>
+    <div class="uc-row" style="margin-top:0.8rem"><span class="uc-label">Fluxo Principal</span><span class="uc-value">
+      <ol class="doc-list">
+        <li>Componente <span class="inline-code">ProgressoBar</span> monta no cliente (após hydration).</li>
+        <li><span class="inline-code">useEffect</span> lê <span class="inline-code">localStorage.getItem("tem_luz_ai_progresso")</span>.</li>
+        <li>Estado <span class="inline-code">progresso</span> atualizado (JSON parseado ou objeto vazio).</li>
+        <li>Sistema calcula: <span class="inline-code">completos = quizzesCompletos + (quizGeralFeito ? 1 : 0)</span>.</li>
+        <li>Percentual: <span class="inline-code">Math.round((completos / 8) * 100)</span> (7 módulos + 1 quiz geral).</li>
+        <li>Sistema renderiza barra de progresso gradiente (indigo→purple) na largura do percentual.</li>
+        <li>Grid 4 colunas exibe células M1–M7 + Geral, coloridas por status (verde=feito, cinza=pendente).</li>
+        <li>Hover em cada célula exibe tooltip com título do módulo.</li>
+      </ol>
+    </span></div>
+    <div class="uc-row"><span class="uc-label">Observação</span><span class="uc-value">Antes do <span class="inline-code">useEffect</span> executar, estado é <span class="inline-code">null</span> — componente retorna <span class="inline-code">null</span> (nenhum HTML) para evitar mismatch de hydration SSR/CSR.</span></div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-id">UC09</div>
+    <div class="uc-title">Indexar Conteúdo (Googlebot)</div>
+    <div class="uc-row"><span class="uc-label">Ator</span><span class="uc-value">Googlebot (crawler automatizado)</span></div>
+    <div class="uc-row"><span class="uc-label">Pré-condição</span><span class="uc-value">Site deployed com robots.txt e sitemap.xml acessíveis em produção.</span></div>
+    <div class="uc-row"><span class="uc-label">Pós-condição</span><span class="uc-value">Páginas indexadas no Google Search com snippets enriquecidos (rich results) provenientes do JSON-LD.</span></div>
+    <div class="uc-row" style="margin-top:0.8rem"><span class="uc-label">Fluxo Principal</span><span class="uc-value">
+      <ol class="doc-list">
+        <li>Googlebot requisita <span class="inline-code">GET /robots.txt</span> → recebe diretivas <span class="inline-code">User-agent: * / Allow: /</span> e URL do sitemap.</li>
+        <li>Googlebot requisita <span class="inline-code">GET /sitemap.xml</span> → recebe 13 URLs com prioridades e changeFrequency.</li>
+        <li>Googlebot rastreia cada URL do sitemap (5 estáticas + 7 módulos + /sitemap.xml dinâmico).</li>
+        <li>Para cada página, extrai: <span class="inline-code">&lt;title&gt;</span>, <span class="inline-code">&lt;meta description&gt;</span>, canonical, Open Graph e JSON-LD.</li>
+        <li>JSON-LD <span class="inline-code">WebSite</span> e <span class="inline-code">EducationalOrganization</span> processados para rich results.</li>
+        <li>Conteúdo indexado no Google Search disponível para usuários buscando por "poluição luminosa", "céu noturno", "IFBA CientificAção" etc.</li>
+      </ol>
+    </span></div>
+    <div class="uc-row"><span class="uc-label">Regras</span><span class="uc-value">RN04 (acesso público), RF11 (robots.txt), RF10 (sitemap), RF12 (metadados)</span></div>
+  </div>
+
+  <h3 class="subsection" id="sec3-3">3.3 Diagrama de Classes / Componentes</h3>
+
+  <p>
+    O sistema adota a arquitetura de <strong>componentes do React 19 com Next.js App Router</strong>,
+    distinguindo Server Components (renderizados no servidor/edge, sem interatividade) de
+    Client Components (necessitam de APIs do browser: estado, efeitos, localStorage).
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Componente / Arquivo</th>
+          <th>Tipo</th>
+          <th>Interface / Props</th>
+          <th>Responsabilidade Principal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>app/layout.tsx<br><em>RootLayout</em></td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td><span class="inline-code">{children: ReactNode}</span></td>
+          <td>Layout raiz: <span class="inline-code">&lt;html&gt;</span>, <span class="inline-code">&lt;body&gt;</span>, Navbar, Footer, globals.css, JSON-LD, export metadata global (SEO).</td>
+        </tr>
+        <tr>
+          <td>app/page.tsx<br><em>HomePage</em></td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td>— (sem props externas)</td>
+          <td>Hero section com estrelas estáticas, mural de 3 cards, seção "O que é PL", 4 tipos de PL, impactos, CTA módulos, sidebar com ProgressoBar e lista de módulos.</td>
+        </tr>
+        <tr>
+          <td>app/modulos/page.tsx<br><em>ModulosPage</em></td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td>— </td>
+          <td>Grid responsivo de 7 ModuloCards, CTA Quiz Geral.</td>
+        </tr>
+        <tr>
+          <td>app/modulos/[id]/page.tsx<br><em>ModuloDetailPage</em></td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td><span class="inline-code">{params: Promise&lt;{id: string}&gt;}</span></td>
+          <td>Rota dinâmica por slug. Renderiza conteúdo Markdown, glossário, exemplos, revisão, quiz, navegação entre módulos.</td>
+        </tr>
+        <tr>
+          <td>app/quiz/page.tsx<br><em>QuizPage</em></td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td>—</td>
+          <td>Quiz Geral com 20 questões de <span class="inline-code">quizGeral.ts</span>. Encapsula componente Quiz client-side.</td>
+        </tr>
+        <tr>
+          <td>app/desafio/page.tsx<br><em>DesafioPage</em></td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td>—</td>
+          <td>Tutorial fotografia noturna, critérios de avaliação, política de uso e CTAs para Google Forms.</td>
+        </tr>
+        <tr>
+          <td>app/para-professores/page.tsx</td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td>—</td>
+          <td>Materiais didáticos por módulo: orientações pedagógicas, perguntas com gabarito, atividade prática, conexão BNCC.</td>
+        </tr>
+        <tr>
+          <td>components/Navbar.tsx</td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td>—</td>
+          <td>Navbar fixa, logo, links desktop, menu mobile via CSS hover group (sem estado JavaScript).</td>
+        </tr>
+        <tr>
+          <td>components/Quiz.tsx</td>
+          <td><span class="badge badge-client">Client</span></td>
+          <td><span class="inline-code">QuizProps: {questoes, titulo?, moduloId?, onComplete?}</span></td>
+          <td>Toda a lógica interativa do quiz: estados (respostas, enviado, questaoAtual, modoRevisao), persistência localStorage, navegação entre questões.</td>
+        </tr>
+        <tr>
+          <td>components/ProgressoBar.tsx</td>
+          <td><span class="badge badge-client">Client</span></td>
+          <td>— (lê localStorage diretamente)</td>
+          <td>Leitura de progresso no useEffect, cálculo de percentual, barra gradiente, grid de módulos com tooltips.</td>
+        </tr>
+        <tr>
+          <td>components/ModuloCard.tsx</td>
+          <td><span class="badge badge-server">Server</span></td>
+          <td><span class="inline-code">{modulo: Modulo}</span></td>
+          <td>Card visual de módulo com ícone, título, resumo e link para <span class="inline-code">/modulos/[slug]</span>.</td>
+        </tr>
+        <tr>
+          <td>components/JsonLd.tsx</td>
+          <td><span class="badge badge-client">Client</span></td>
+          <td><span class="inline-code">{data: Record&lt;string, unknown&gt;}</span></td>
+          <td>Injeta script <span class="inline-code">type="application/ld+json"</span> no <span class="inline-code">&lt;head&gt;</span> via <span class="inline-code">dangerouslySetInnerHTML</span> para Schema.org.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec3-4">3.4 Modelo de Dados</h3>
+
+  <h4 class="subsubsection">Interfaces TypeScript — data/modulos.ts (~102KB)</h4>
+
+  <pre><code>// Interface principal de módulo
+export interface Modulo {
+  id:                  number;        // 1–7
+  slug:                string;        // URL slug (ex: "introducao", "gastos-energia")
+  titulo:              string;        // Título do módulo
+  subtitulo:           string;        // Subtítulo descritivo
+  icone:               string;        // Emoji representativo
+  cor:                 string;        // Classe Tailwind gradient (ex: "from-yellow-400 to-orange-500")
+  resumo:              string;        // Parágrafo de introdução
+  conteudo:            string;        // Texto completo em Markdown (~10–20KB por módulo)
+  glossario:           GlossarioItem[];
+  exemplos:            Exemplo[];
+  revisao:             string[];      // Pontos-chave da mini-revisão
+  quiz:                QuestaoQuiz[]; // 5–8 questões por módulo
+  textoCompleto:       string;        // Para professores — texto expandido
+  orientacoesDidaticas:string;
+  perguntasRevisao:    Array&lt;{pergunta: string; gabarito: string}&gt;;
+  atividadePratica:    string;
+  conexaoBNCC:         string;
+}
+
+export interface QuestaoQuiz {
+  id:          string;
+  tipo:        "multipla_escolha" | "verdadeiro_falso";
+  enunciado:   string;
+  alternativas?:string[];            // apenas para tipo multipla_escolha
+  resposta:    string | boolean;     // string para MC, boolean para VF
+  explicacao:  string;
+}
+
+export interface GlossarioItem { termo: string; definicao: string; }
+export interface Exemplo       { titulo: string; descricao: string; }</code></pre>
+
+  <h4 class="subsubsection">Estrutura de Persistência — localStorage</h4>
+
+  <pre><code>// Chave no localStorage do browser
+"tem_luz_ai_progresso"
+
+// Valor (JSON serializado)
+{
+  "quiz_modulo_1": { "score": 4, "total": 5, "data": "2025-07-15T14:30:00.000Z" },
+  "quiz_modulo_2": { "score": 3, "total": 5, "data": "2025-07-15T14:45:00.000Z" },
+  "quiz_modulo_3": { "score": 5, "total": 5, "data": "2025-07-15T15:00:00.000Z" },
+  "quiz_modulo_4": { "score": 4, "total": 6, "data": "2025-07-15T15:10:00.000Z" },
+  "quiz_modulo_5": { "score": 3, "total": 5, "data": "2025-07-15T15:20:00.000Z" },
+  "quiz_modulo_6": { "score": 5, "total": 6, "data": "2025-07-15T15:30:00.000Z" },
+  "quiz_modulo_7": { "score": 4, "total": 5, "data": "2025-07-15T15:40:00.000Z" },
+  "quiz_geral":   { "score": 16, "total": 20, "data": "2025-07-15T16:00:00.000Z" }
+}</code></pre>
+
+  <h4 class="subsubsection">Catálogo de Módulos</h4>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Slug</th><th>Título</th><th>Ícone</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><span class="inline-code">introducao</span></td><td>Introdução à Poluição Luminosa</td><td>💡</td></tr>
+        <tr><td>2</td><td><span class="inline-code">gastos-energia</span></td><td>Gastos e Desperdício de Energia</td><td>⚡</td></tr>
+        <tr><td>3</td><td><span class="inline-code">observacoes-astronomicas</span></td><td>Observações Astronômicas</td><td>🔭</td></tr>
+        <tr><td>4</td><td><span class="inline-code">consequencias-socioambientais</span></td><td>Consequências Socioambientais</td><td>🌿</td></tr>
+        <tr><td>5</td><td><span class="inline-code">cultura-ceu</span></td><td>Cultura e Céu Noturno</td><td>🌌</td></tr>
+        <tr><td>6</td><td><span class="inline-code">leis-normas-medidas</span></td><td>Leis, Normas e Medidas</td><td>⚖️</td></tr>
+        <tr><td>7</td><td><span class="inline-code">conclusoes-propostas</span></td><td>Conclusões e Propostas</td><td>🚀</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec3-5">3.5 Arquitetura do Sistema</h3>
+
+  <p>
+    O sistema adota o padrão arquitetural <strong>JAMstack Edge</strong> — uma evolução do JAMstack
+    tradicional onde as funções serverless são executadas no edge da rede (próximas ao usuário final),
+    não em regiões de datacenter centralizadas.
+  </p>
+
+  <div class="arch-diagram">
+<span class="layer-title">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="layer-title">│                     CAMADA DE DESENVOLVIMENTO / CI                  │</span>
+<span class="layer-title">└─────────────────────────────────────────────────────────────────────┘</span>
+  <span class="layer-tech">GitHub Repository</span> (JbsbhsKsuwabe/my-plwebapp)
+        ↓ push para branch main
+  <span class="layer-tech">GitHub Actions</span> (ubuntu-latest, 7GB RAM)
+        ↓ npm ci
+        ↓ npx @cloudflare/next-on-pages  [NODE_OPTIONS=--max-old-space-size=4096]
+        ↓ node scripts/fix-cloudflare-routes.mjs
+        ↓ wrangler pages deploy .vercel/output/static
+
+<span class="layer-title">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="layer-title">│                     CLOUDFLARE EDGE (PRODUÇÃO)                      │</span>
+<span class="layer-title">└─────────────────────────────────────────────────────────────────────┘</span>
+  <span class="layer-tech">Cloudflare Pages CDN</span>
+    ├── Assets estáticos (CSS, JS, imagens, robots.txt, sitemap.xml)
+    └── <span class="layer-tech">Cloudflare Workers (Edge Runtime)</span>
+          ├── / → index.func.js (HomePage)
+          ├── /modulos → ModulosPage
+          ├── /modulos/[slug] → ModuloDetailPage
+          ├── /quiz → QuizPage
+          ├── /desafio → DesafioPage
+          ├── /para-professores → ParaProfessoresPage
+          └── /sitemap.xml → sitemap.ts (gerador dinâmico)
+
+<span class="layer-title">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="layer-title">│                     CLIENTE (BROWSER DO USUÁRIO)                    │</span>
+<span class="layer-title">└─────────────────────────────────────────────────────────────────────┘</span>
+  <span class="layer-tech">React 19 Hydration</span>
+    ├── Client Components: Quiz.tsx, ProgressoBar.tsx, JsonLd.tsx
+    └── <span class="layer-tech">localStorage</span>  →  "tem_luz_ai_progresso" (progresso persistente)
+
+<span class="layer-title">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="layer-title">│                     SERVIÇOS EXTERNOS                               │</span>
+<span class="layer-title">└─────────────────────────────────────────────────────────────────────┘</span>
+  <span class="layer-tech">Google Forms</span> (formulários de pesquisa — dados externos)
+  <span class="layer-tech">Google Search</span> (indexação via robots.txt + sitemap.xml + JSON-LD)
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Camada</th><th>Tecnologia</th><th>Localização / Responsabilidade</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Versionamento</td><td>Git + GitHub</td><td>Repositório remoto; histórico de commits; trigger para CI/CD.</td></tr>
+        <tr><td>CI/CD</td><td>GitHub Actions</td><td>Build Next.js → Workers; deploy automático no push para main.</td></tr>
+        <tr><td>CDN/Edge Runtime</td><td>Cloudflare Workers (200+ PoPs)</td><td>Executa as funções Next.js no edge; serve assets estáticos; HTTPS automático.</td></tr>
+        <tr><td>Framework</td><td>Next.js 15.3.0 App Router</td><td>Roteamento baseado em sistema de arquivos; Server/Client Components; geração de metadados e sitemap.</td></tr>
+        <tr><td>Adapter</td><td>@cloudflare/next-on-pages v1.13.16</td><td>Converte output <span class="inline-code">.vercel/output/</span> para formato Cloudflare Workers.</td></tr>
+        <tr><td>Persistência</td><td>localStorage (browser)</td><td>Armazena progresso dos quizzes exclusivamente no cliente.</td></tr>
+        <tr><td>Formulários</td><td>Google Forms</td><td>Coleta de dados de pesquisa externa ao sistema.</td></tr>
+        <tr><td>Indexação</td><td>Google Search Console</td><td>Registro e monitoramento da indexação (pendente configuração).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec3-6">3.6 Diagrama de Sequência — Fluxo Quiz</h3>
+
+  <p>
+    O diagrama abaixo representa a sequência de interações entre os objetos do sistema durante a
+    realização e conclusão de um quiz de módulo:
+  </p>
+
+  <div class="arch-diagram">
+  Usuário       Browser/DOM        Quiz.tsx         localStorage      ProgressoBar
+     │                │                │                 │                  │
+     │ GET /modulos/  │                │                 │                  │
+     │ [slug]         │                │                 │                  │
+     │────────────────►                │                 │                  │
+     │                │ Server render  │                 │                  │
+     │                │ + hydrate      │                 │                  │
+     │                ◄────────────────                  │                  │
+     │                │                │                 │                  │
+     │ Seleciona      │                │                 │                  │
+     │ alternativa    │                │                 │                  │
+     │────────────────►────────────────► handleResposta()│                  │
+     │                │                │ setState({      │                  │
+     │                │                │  respostas })   │                  │
+     │                ◄────────────────                  │                  │
+     │                │                │                 │                  │
+     │ Clica "Próxima"│                │                 │                  │
+     │────────────────►────────────────► setQuestaoAtual │                  │
+     │                │                │ (prev + 1)      │                  │
+     │                ◄────────────────                  │                  │
+     │                │                │ [repete passos  │                  │
+     │                │                │  2–4 até N]     │                  │
+     │                │                │                 │                  │
+     │ "Finalizar Quiz│                │                 │                  │
+     │────────────────►────────────────► handleEnviar()  │                  │
+     │                │                │ calcularScore() │                  │
+     │                │                │─────────────────► setItem(         │
+     │                │                │                 │ "progresso",JSON)│
+     │                │                │◄─────────────────                  │
+     │                │                │ setEnviado(true)│                  │
+     │                │                │ setModoRevisao  │                  │
+     │                │ Exibe resultado│                 │                  │
+     │                ◄────────────────                  │                  │
+     │                │                │                 │                  │
+     │ Navega para    │                │                 │                  │
+     │ Home           │                │                 │                  │
+     │────────────────►                │                 │                  │
+     │                │                │                 │ getItem(         │
+     │                │                │                 │ "progresso")     │
+     │                │                │                 ◄──────────────────►
+     │                │ Exibe barra    │                 │                  │
+     │                │ de progresso   │                 │                  │
+     │                │ atualizada     │                 │                  │
+     ◄────────────────                                                       │
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       4. PROCESSO DE DESENVOLVIMENTO
+  ════════════════════════════════════════════════════════════ -->
+  <div id="sec4" class="section-header">
+    <span class="section-num">SEC. 4</span>
+    <h2 class="section-title">Processo de Desenvolvimento</h2>
+  </div>
+
+  <h3 class="subsection" id="sec4-1">4.1 Metodologia</h3>
+
+  <p>
+    O projeto adotou um processo de <strong>desenvolvimento incremental e iterativo</strong>, alinhado
+    com os princípios ágeis (Sommerville, 2011, cap. 3). Em vez de um modelo em cascata rígido,
+    o desenvolvimento foi organizado em quatro iterações curtas, cada uma entregando incrementos
+    funcionais e deployáveis do sistema.
+  </p>
+
+  <p>
+    A escolha por este processo deveu-se à natureza exploratória do projeto de pesquisa — onde
+    requisitos como o terceiro card da Home ou as configurações de SEO emergiram durante o
+    desenvolvimento — e às restrições técnicas descobertas iterativamente (incompatibilidade do
+    Next.js 16, bug do favicon, limitação de memória do sandbox).
+  </p>
+
+  <div class="callout callout-info">
+    <strong>Princípio fundamental adotado:</strong> "Entregue algo funcional a cada iteração."
+    Cada iteração produziu um sistema em produção, verificável pela URL
+    <span class="inline-code">https://tem-luz-ai.pages.dev</span>, antes de iniciar a próxima fase.
+  </div>
+
+  <h3 class="subsection" id="sec4-2">4.2 Cronograma por Iterações</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Iteração</th><th>Objetivo</th><th>Atividades Realizadas</th><th>Entregáveis</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Iter. 1</strong><br>Setup &amp; Deploy Inicial</td>
+          <td>Colocar o site online</td>
+          <td>
+            Análise de compatibilidade Next.js/Cloudflare;<br>
+            Downgrade Next.js 16 → 15.3.0;<br>
+            Instalação @cloudflare/next-on-pages + wrangler;<br>
+            Adição de <span class="inline-code">runtime = 'edge'</span> em todas as páginas;<br>
+            Remoção de next/font/google;<br>
+            Substituição de Math.random() por arrays estáticos;<br>
+            Correção de erros TypeScript/ESLint;<br>
+            Criação do projeto Cloudflare Pages "tem-luz-ai";<br>
+            Primeiro build e deploy bem-sucedido;<br>
+            Push para GitHub.
+          </td>
+          <td>Site online em <a href="https://tem-luz-ai.pages.dev" target="_blank">tem-luz-ai.pages.dev</a></td>
+          <td><span class="badge badge-ok">✅ Concluído</span></td>
+        </tr>
+        <tr>
+          <td><strong>Iter. 2</strong><br>Correções &amp; Features</td>
+          <td>Corrigir bug crítico e expandir Home</td>
+          <td>
+            Diagnóstico do bug: rota "/" servia favicon.ico (Content-Type: image/x-icon);<br>
+            Identificação da causa raiz: app/favicon.ico mapeado pelo worker;<br>
+            Solução: mover favicon para public/favicon.ico;<br>
+            Criação de scripts/fix-cloudflare-routes.mjs (salvaguarda pós-build);<br>
+            Adição do card "Público Geral" no mural da Home;<br>
+            Atualização do grid para md:grid-cols-3;<br>
+            Criação de scripts/verify-home-route.mjs (8 testes automatizados);<br>
+            Rebuild e redeploy; 8/8 testes passando;<br>
+            Commit e push.
+          </td>
+          <td>Home com 3 cards; 8/8 testes passando; rota "/" funcional</td>
+          <td><span class="badge badge-ok">✅ Concluído</span></td>
+        </tr>
+        <tr>
+          <td><strong>Iter. 3</strong><br>SEO &amp; Indexação</td>
+          <td>Tornar o site indexável pelo Google</td>
+          <td>
+            Criação de public/robots.txt;<br>
+            Criação de public/sitemap.xml (13 URLs estáticas);<br>
+            Criação de app/sitemap.ts (gerador dinâmico Next.js);<br>
+            Atualização de app/layout.tsx: metadataBase, canonical, robots, OG, Twitter Card, keywords;<br>
+            Criação de components/JsonLd.tsx;<br>
+            Adição de JSON-LD WebSite + EducationalOrganization no layout;<br>
+            Criação de .github/workflows/deploy.yml (CI/CD);<br>
+            Commit de todos os arquivos SEO.
+          </td>
+          <td>Arquivos SEO commitados (acbf013); build/deploy pendente por OOM</td>
+          <td><span class="badge badge-pend">⏳ Deploy Pendente</span></td>
+        </tr>
+        <tr>
+          <td><strong>Iter. 4</strong><br>Documentação ES</td>
+          <td>Documentar o sistema formalmente</td>
+          <td>
+            Análise de todos os artefatos produzidos;<br>
+            Elaboração desta documentação de Engenharia de Software.
+          </td>
+          <td>Este documento HTML</td>
+          <td><span class="badge badge-pend">🔄 Em Andamento</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec4-3">4.3 Gestão de Configuração (Git)</h3>
+
+  <p>
+    O versionamento do código-fonte segue as práticas de controle de versão com Git, utilizando
+    o GitHub como repositório remoto. O projeto utiliza um único branch principal (<span class="inline-code">main</span>),
+    adequado ao contexto de desenvolvimento individual do projeto de pesquisa.
+  </p>
+
+  <div class="highlight-box">
+    <div class="highlight-box-title">Repositório e Branches</div>
+    <div class="def-list">
+      <div class="def-item"><span class="def-term">Remote</span><span class="def-desc">https://github.com/JbsbhsKsuwabe/my-plwebapp</span></div>
+      <div class="def-item"><span class="def-term">Branch</span><span class="def-desc">main (branch único; nenhum branch de feature utilizado)</span></div>
+      <div class="def-item"><span class="def-term">Estratégia</span><span class="def-desc">Commits frequentes com mensagens descritivas; push após cada iteração funcional</span></div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Commit (Hash)</th><th>Mensagem</th><th>Impacto</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="inline-code">initial</span></td><td>Initial commit — estrutura base Next.js</td><td>Estrutura inicial do projeto</td></tr>
+        <tr><td><span class="inline-code">—</span></td><td>fix: downgrade next.js 16 → 15.3.0 + edge runtime</td><td>Primeiro build bem-sucedido</td></tr>
+        <tr><td><span class="inline-code">a1d6d7f</span></td><td>fix: move favicon to public/ + add verify scripts</td><td>Bug de rota "/" corrigido; 8/8 testes passando (último build em produção)</td></tr>
+        <tr><td><span class="inline-code">—</span></td><td>feat: add Público Geral card + 3-column grid</td><td>Terceiro card no mural da Home</td></tr>
+        <tr><td><span class="inline-code">—</span></td><td>feat: SEO completo — robots.txt, sitemap, metadados, JSON-LD</td><td>Todos os artefatos de SEO adicionados</td></tr>
+        <tr><td><span class="inline-code">acbf013</span></td><td>chore: remove workflow temporariamente</td><td>Último commit no branch main (deploy pendente por restrição de permissão de workflow)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec4-4">4.4 Pipeline de CI/CD</h3>
+
+  <p>
+    O pipeline de CI/CD é implementado via <strong>GitHub Actions</strong>, definido no arquivo
+    <span class="inline-code">.github/workflows/deploy.yml</span>. Ele automatiza o ciclo completo
+    de build → verificação → deploy a cada push na branch main.
+  </p>
+
+  <pre><code># .github/workflows/deploy.yml (simplificado)
+name: Deploy to Cloudflare Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # 7GB RAM — necessário para contornar OOM do sandbox
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci                               # Instala dependências exatas do package-lock.json
+
+      - run: npx @cloudflare/next-on-pages        # Build principal (converte Next.js → CF Workers)
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'  # Aumenta heap para 4GB
+
+      - run: node scripts/fix-cloudflare-routes.mjs  # Verifica/corrige bug favicon→/
+
+      - uses: cloudflare/wrangler-action@v3        # Deploy para Cloudflare Pages
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy .vercel/output/static --project-name=tem-luz-ai --commit-dirty=true</code></pre>
+
+  <div class="callout callout-warn">
+    <strong>Secrets necessários no repositório GitHub:</strong>
+    <span class="inline-code">CLOUDFLARE_API_TOKEN</span> (token de API com permissão em Cloudflare Pages) e
+    <span class="inline-code">CLOUDFLARE_ACCOUNT_ID</span> (<span class="inline-code">0b524b961108d4d42de1f63823e8544f</span>).
+    Estes secrets devem ser configurados em Settings → Secrets → Actions no repositório GitHub.
+  </div>
+
+  <h3 class="subsection" id="sec4-5">4.5 Estratégia de Testes</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Tipo de Teste</th><th>Ferramenta / Método</th><th>Escopo</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Testes de Rota / Fumaça</td><td><span class="inline-code">scripts/verify-home-route.mjs</span> (Node.js, fetch nativo)</td><td>8 verificações da integridade da rota / e do favicon.ico em produção</td><td><span class="badge badge-ok">8/8 passando</span></td></tr>
+        <tr><td>Lint / Análise Estática</td><td>ESLint com <span class="inline-code">eslint-config-next</span></td><td>TypeScript correto, regras React, imports não utilizados</td><td><span class="badge badge-ok">Sem erros</span></td></tr>
+        <tr><td>Build de Integração</td><td><span class="inline-code">npx @cloudflare/next-on-pages</span></td><td>Compatibilidade edge runtime, ausência de APIs Node.js, tamanho do bundle Workers</td><td><span class="badge badge-ok">Passou no CI</span></td></tr>
+        <tr><td>Teste Manual</td><td>Browser (Chrome, Mobile)</td><td>Navegação entre rotas, interatividade do quiz, persistência localStorage, responsividade mobile</td><td><span class="badge badge-ok">Validado</span></td></tr>
+        <tr><td>Teste de Produção</td><td>Acesso direto a <span class="inline-code">tem-luz-ai.pages.dev</span></td><td>Comportamento real em Cloudflare edge; Content-Type correto; HTTPS; latência</td><td><span class="badge badge-ok">Validado</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="subsubsection">Detalhamento dos 8 Testes Automatizados (verify-home-route.mjs)</h4>
+
+  <ol class="flow-list">
+    <li><strong>Status HTTP 200</strong> — Requisição GET / retorna status code 200.</li>
+    <li><strong>Content-Type HTML</strong> — Header <span class="inline-code">content-type</span> contém <span class="inline-code">text/html</span> (e <em>não</em> <span class="inline-code">image/x-icon</span>).</li>
+    <li><strong>Título presente</strong> — HTML contém a string "Tem Luz Aí" no título ou no corpo.</li>
+    <li><strong>Conteúdo não binário</strong> — Primeiros bytes do body não são assinatura de arquivo binário ICO/PNG/GIF.</li>
+    <li><strong>Card Público Geral presente</strong> — HTML contém o texto "Público Geral" ou "PÚBLICO GERAL".</li>
+    <li><strong>Link do formulário presente</strong> — HTML contém <span class="inline-code">forms.gle/RE1v5BR1RsJHCkVW9</span> (link do formulário do card verde).</li>
+    <li><strong>favicon.ico retorna image/x-icon</strong> — Requisição GET /favicon.ico tem Content-Type correto.</li>
+    <li><strong>favicon.ico retorna status 200</strong> — O favicon existe e é servido com sucesso.</li>
+  </ol>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       5. CONSTRUÇÃO DO SISTEMA
+  ════════════════════════════════════════════════════════════ -->
+  <div id="sec5" class="section-header">
+    <span class="section-num">SEC. 5</span>
+    <h2 class="section-title">Construção do Sistema</h2>
+  </div>
+
+  <h3 class="subsection" id="sec5-1">5.1 Estrutura de Arquivos do Projeto</h3>
+
+  <pre><code>webapp/                                    ← Raiz do projeto
+├── app/                                   ← Next.js App Router (páginas e layouts)
+│   ├── layout.tsx                         ← Layout raiz: HTML/body, Navbar, Footer, metadados SEO, JSON-LD
+│   ├── page.tsx                           ← Home: hero, mural 3 cards, conteúdo PL, sidebar
+│   ├── globals.css                        ← Tailwind CSS v4, custom .gradient-text, animações CSS
+│   ├── sitemap.ts                         ← Gerador dinâmico sitemap (MetadataRoute.Sitemap)
+│   ├── desafio/
+│   │   └── page.tsx                       ← Tutorial fotografia noturna, critérios, CTAs
+│   ├── modulos/
+│   │   ├── page.tsx                       ← Lista de módulos (grid ModuloCard)
+│   │   └── [id]/
+│   │       └── page.tsx                   ← Detalhe do módulo: conteúdo MD, glossário, quiz
+│   ├── quiz/
+│   │   └── page.tsx                       ← Quiz Geral 20 questões
+│   └── para-professores/
+│       └── page.tsx                       ← Materiais didáticos por módulo
+│
+├── components/                            ← Componentes React reutilizáveis
+│   ├── Navbar.tsx                         ← Navbar fixa: logo, links desktop, menu mobile CSS
+│   ├── Quiz.tsx                           ← "use client": estado quiz, localStorage, revisão
+│   ├── ProgressoBar.tsx                   ← "use client": useEffect localStorage, barra progresso
+│   ├── ModuloCard.tsx                     ← Card estático de módulo
+│   └── JsonLd.tsx                         ← "use client": &lt;script type="application/ld+json"&gt;
+│
+├── data/                                  ← Dados do domínio (TypeScript)
+│   ├── modulos.ts                         ← 7 módulos completos ~102KB: interfaces + dados
+│   └── quizGeral.ts                       ← 20 questões do quiz geral
+│
+├── public/                                ← Assets estáticos servidos diretamente pela CDN
+│   ├── favicon.ico                        ← Favicon (movido de app/ — corrige bug worker CF)
+│   ├── robots.txt                         ← Diretivas para crawlers (User-agent: * / Allow: /)
+│   └── sitemap.xml                        ← Sitemap XML estático com 13 URLs + prioridades
+│
+├── scripts/                               ← Scripts Node.js utilitários (build/teste)
+│   ├── fix-cloudflare-routes.mjs          ← Pós-build: corrige mapeamento "/" → favicon no worker
+│   └── verify-home-route.mjs             ← 8 testes smoke da rota / em produção
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml                     ← CI/CD: checkout → build → fix → deploy Cloudflare
+│
+├── next.config.ts                         ← outputFileTracingExcludes (reduz memória no build)
+├── wrangler.jsonc                         ← Config CF Pages: name, compatibility_date, output_dir
+├── tsconfig.json                          ← TS estrito: strict, paths @/*, jsx preserve
+├── package.json                           ← Deps + scripts: build, build:cf, deploy:prod, verify
+└── eslint.config.mjs                      ← ESLint next + ignores .next/, out/, build/</code></pre>
+
+  <h3 class="subsection" id="sec5-2">5.2 Decisões de Design de Código</h3>
+
+  <h4 class="subsubsection">1. Edge Runtime Obrigatório em Todas as Páginas</h4>
+
+  <p>
+    Cada arquivo de página (<span class="inline-code">page.tsx</span>) exporta
+    <span class="inline-code">export const runtime = 'edge'</span>. Esta declaração instrui o
+    Next.js e o <span class="inline-code">@cloudflare/next-on-pages</span> a compilar a rota para
+    execução no runtime de Cloudflare Workers, que é um subconjunto das Web APIs — sem suporte a
+    APIs Node.js (<span class="inline-code">fs</span>, <span class="inline-code">path</span>,
+    <span class="inline-code">crypto</span>, <span class="inline-code">child_process</span> etc.).
+  </p>
+
+  <div class="callout callout-error">
+    <strong>Proibições no Edge Runtime:</strong> qualquer uso de
+    <span class="inline-code">import fs from 'fs'</span>,
+    <span class="inline-code">import path from 'path'</span>,
+    <span class="inline-code">import { ... } from 'next/font/google'</span>
+    ou qualquer API que dependa do sistema de arquivos do servidor resulta em erro de build ou
+    crash silencioso em produção.
+  </div>
+
+  <h4 class="subsubsection">2. Substituição de Math.random() por Arrays Estáticos</h4>
+
+  <p>
+    O React 19 exige que Server Components sejam <strong>funções puras</strong> — com output
+    determinístico dado o mesmo input. <span class="inline-code">Math.random()</span> viola esta regra,
+    pois retorna valores diferentes a cada renderização, causando divergências entre o HTML gerado
+    no servidor e a hidratação no cliente (hydration mismatch), resultando em erro em produção.
+  </p>
+
+  <p>
+    A solução adotada foi criar os arrays <span class="inline-code">STARS</span> (Home) e
+    <span class="inline-code">STARS_D</span> (Desafio) com coordenadas pré-geradas e fixas
+    diretamente no código-fonte. Isto preserva o efeito visual de céu estrelado sem comprometer
+    a pureza dos componentes.
+  </p>
+
+  <h4 class="subsubsection">3. Rota Dinâmica de Módulos sem generateStaticParams</h4>
+
+  <p>
+    A rota <span class="inline-code">/modulos/[id]</span> é dinâmica — o parâmetro
+    <span class="inline-code">id</span> recebe o slug do módulo (ex: <span class="inline-code">introducao</span>).
+    Em Next.js, rotas dinâmicas com SSG usam <span class="inline-code">generateStaticParams()</span>
+    para pré-gerar os paths em build time. Porém, esta função é <strong>incompatível com edge runtime</strong>
+    — o Next.js proíbe a combinação. A solução foi remover o <span class="inline-code">generateStaticParams</span>
+    e adicionar <span class="inline-code">export const dynamic = 'force-dynamic'</span>, tornando a
+    rota resolvida dinamicamente no edge a cada requisição.
+  </p>
+
+  <h4 class="subsubsection">4. Renderização Markdown com Helper Customizado</h4>
+
+  <p>
+    O conteúdo dos módulos é armazenado como Markdown em
+    <span class="inline-code">data/modulos.ts</span>. Para renderizá-lo como HTML, foi criada a
+    função <span class="inline-code">renderMarkdown(text: string)</span> em
+    <span class="inline-code">app/modulos/[id]/page.tsx</span>. Esta função processa linha a linha,
+    identificando cabeçalhos (<span class="inline-code">##</span>, <span class="inline-code">###</span>),
+    listas, blockquotes, tabelas e parágrafos, aplicando formatação bold/italic/code via regex.
+    A decisão de não usar bibliotecas como <span class="inline-code">marked</span> ou
+    <span class="inline-code">remark</span> foi motivada pela compatibilidade com edge runtime e
+    pelo desejo de manter o bundle mínimo.
+  </p>
+
+  <h4 class="subsubsection">5. Padrão useState(null) + useEffect para Hidratação</h4>
+
+  <p>
+    O componente <span class="inline-code">ProgressoBar</span> precisa ler o <span class="inline-code">localStorage</span>,
+    que está disponível apenas no browser (não no servidor/edge). Para evitar erros de hydration
+    mismatch, o padrão adotado é:
+  </p>
+
+  <pre><code>const [progresso, setProgresso] = useState&lt;ProgressoData | null&gt;(null);
+
+useEffect(() => {
+  // Executa apenas no cliente, após montagem
+  const saved = localStorage.getItem("tem_luz_ai_progresso");
+  setProgresso(saved ? JSON.parse(saved) : {});
+}, []);
+
+// Durante SSR/hydration: renderiza null (nenhum HTML)
+if (progresso === null) return null;</code></pre>
+
+  <p>
+    Este padrão garante que o HTML do servidor seja sempre vazio para este componente, eliminando
+    qualquer divergência com a primeira renderização do cliente.
+  </p>
+
+  <h3 class="subsection" id="sec5-3">5.3 Análise Detalhada dos Componentes Críticos</h3>
+
+  <h4 class="subsubsection">Quiz.tsx — Máquina de Estados do Quiz</h4>
+
+  <p>
+    O componente <span class="inline-code">Quiz</span> é o mais complexo do sistema em termos de
+    lógica de estado. Ele gerencia quatro variáveis de estado independentes:
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Estado</th><th>Tipo</th><th>Valor Inicial</th><th>Função</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="inline-code">respostas</span></td><td><span class="inline-code">Record&lt;string, string|boolean&gt;</span></td><td><span class="inline-code">{}</span></td><td>Mapeia ID da questão para a resposta do usuário</td></tr>
+        <tr><td><span class="inline-code">enviado</span></td><td><span class="inline-code">boolean</span></td><td><span class="inline-code">false</span></td><td>Controla se o quiz foi finalizado (habilita gabarito)</td></tr>
+        <tr><td><span class="inline-code">questaoAtual</span></td><td><span class="inline-code">number</span></td><td><span class="inline-code">0</span></td><td>Índice da questão sendo exibida no modo quiz</td></tr>
+        <tr><td><span class="inline-code">modoRevisao</span></td><td><span class="inline-code">boolean</span></td><td><span class="inline-code">false</span></td><td>Quando true, exibe todas as questões com gabarito colorido</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    O fluxo de persistência do score no <span class="inline-code">localStorage</span> dentro de
+    <span class="inline-code">handleEnviar()</span>:
+  </p>
+
+  <pre><code>const handleEnviar = () => {
+  const score = calcularScore();
+  setEnviado(true);
+  setModoRevisao(true);
+  setQuestaoAtual(0);
+  onComplete?.(score, questoes.length);
+
+  // Persistência no localStorage (apenas client-side)
+  if (typeof window !== "undefined") {
+    const chave = moduloId ? `quiz_modulo_${moduloId}` : "quiz_geral";
+    const progresso = JSON.parse(
+      localStorage.getItem("tem_luz_ai_progresso") || "{}"
+    );
+    progresso[chave] = {
+      score,
+      total: questoes.length,
+      data: new Date().toISOString(),
+    };
+    localStorage.setItem("tem_luz_ai_progresso", JSON.stringify(progresso));
+  }
+};</code></pre>
+
+  <p>
+    A verificação <span class="inline-code">typeof window !== "undefined"</span> é uma salvaguarda
+    de compatibilidade SSR — embora desnecessária em um Client Component (que só executa no cliente),
+    é uma boa prática defensiva.
+  </p>
+
+  <h4 class="subsubsection">ProgressoBar.tsx — Sincronização com localStorage</h4>
+
+  <p>
+    O cálculo do percentual de progresso é realizado sobre um denominador fixo de <strong>8</strong>
+    (7 quizzes de módulos + 1 quiz geral):
+  </p>
+
+  <pre><code>const quizzesCompletos = modulos.filter(
+  (m) => progresso[`quiz_modulo_${m.id}`]
+).length;                              // 0–7
+
+const quizGeralFeito = !!progresso["quiz_geral"];  // 0 ou 1
+
+const total = modulos.length + 1;     // = 8
+const completos = quizzesCompletos + (quizGeralFeito ? 1 : 0);
+const percentual = Math.round((completos / total) * 100);</code></pre>
+
+  <p>
+    O componente renderiza um grid de 4 colunas com 8 células (M1–M7 + Geral). Cada célula é
+    um link <span class="inline-code">&lt;Link href=...&gt;</span> que conduz ao módulo ou ao quiz geral,
+    facilitando a navegação direta do usuário a partir da barra de progresso.
+  </p>
+
+  <h3 class="subsection" id="sec5-4">5.4 Tecnologias e Versões</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Tecnologia</th><th>Versão</th><th>Categoria</th><th>Função no Sistema</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Next.js</td><td>15.3.0</td><td>Framework</td><td>App Router, SSR/edge, metadados, sitemap, geração de páginas</td></tr>
+        <tr><td>React</td><td>19.0.0</td><td>UI Library</td><td>Server/Client Components, useState, useEffect, hydration</td></tr>
+        <tr><td>TypeScript</td><td>5.x</td><td>Linguagem</td><td>Tipagem estática estrita; interfaces Modulo, QuestaoQuiz, QuizProps, ProgressoData</td></tr>
+        <tr><td>Tailwind CSS</td><td>4.x</td><td>Estilização</td><td>Utility-first; dark theme; grid responsivo; hover states; animações</td></tr>
+        <tr><td>@cloudflare/next-on-pages</td><td>1.13.16</td><td>Adapter/Build</td><td>Converte output Vercel/Next.js para formato Cloudflare Workers (.vercel/output/static)</td></tr>
+        <tr><td>Wrangler</td><td>4.67.0</td><td>CLI Deploy</td><td>Deploy para Cloudflare Pages; criação de projeto; gestão de secrets</td></tr>
+        <tr><td>@tailwindcss/postcss</td><td>4.x</td><td>Bundler Plugin</td><td>Integração Tailwind v4 com PostCSS no pipeline de build do Next.js</td></tr>
+        <tr><td>ESLint</td><td>9.x</td><td>Linter</td><td>Análise estática com eslint-config-next; verificação de imports, hooks e JSX</td></tr>
+        <tr><td>Node.js</td><td>20.x</td><td>Runtime Build</td><td>Ambiente de execução para build no GitHub Actions (CI)</td></tr>
+        <tr><td>PM2</td><td>—</td><td>Process Manager</td><td>Gerencia wrangler pages dev no sandbox de desenvolvimento local</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       6. IMPLEMENTAÇÃO E DEPLOY
+  ════════════════════════════════════════════════════════════ -->
+  <div id="sec6" class="section-header">
+    <span class="section-num">SEC. 6</span>
+    <h2 class="section-title">Implementação e Deploy</h2>
+  </div>
+
+  <h3 class="subsection" id="sec6-1">6.1 Ambiente de Produção</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Atributo</th><th>Valor</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>URL de Produção</td><td><a href="https://tem-luz-ai.pages.dev" target="_blank">https://tem-luz-ai.pages.dev</a></td></tr>
+        <tr><td>Plataforma</td><td>Cloudflare Pages</td></tr>
+        <tr><td>Runtime</td><td>Cloudflare Workers (Edge Runtime)</td></tr>
+        <tr><td>Nome do Projeto CF</td><td>tem-luz-ai</td></tr>
+        <tr><td>Account ID</td><td><span class="inline-code">0b524b961108d4d42de1f63823e8544f</span></td></tr>
+        <tr><td>CDN</td><td>200+ pontos de presença Cloudflare globais</td></tr>
+        <tr><td>HTTPS</td><td>Automático (Cloudflare Universal SSL)</td></tr>
+        <tr><td>HTTP/2 + HTTP/3</td><td>Habilitado por padrão</td></tr>
+        <tr><td>Compressão</td><td>Brotli + gzip automático</td></tr>
+        <tr><td>Repositório GitHub</td><td>https://github.com/JbsbhsKsuwabe/my-plwebapp</td></tr>
+        <tr><td>Último deploy bem-sucedido</td><td>Commit a1d6d7f (sem SEO files)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec6-2">6.2 Pipeline de Build</h3>
+
+  <p>
+    O build segue uma sequência de quatro etapas encadeadas, onde cada etapa depende do resultado
+    da anterior:
+  </p>
+
+  <ol class="flow-list">
+    <li>
+      <div>
+        <strong>next build</strong> (executado internamente pelo @cloudflare/next-on-pages)<br>
+        Compila os arquivos TypeScript, processa o Tailwind CSS v4, aplica tree-shaking e
+        gera o output Vercel em <span class="inline-code">.vercel/output/</span>. Esta etapa consome
+        entre 600–800MB de RAM (causa do problema OOM no sandbox de desenvolvimento).
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>npx @cloudflare/next-on-pages</strong><br>
+        Lê o output Vercel gerado pelo Next.js e o converte para o formato aceito pelo Cloudflare
+        Workers: funções edge em <span class="inline-code">.vercel/output/static/_worker.js/</span>
+        e assets estáticos servíveis pela CDN do Cloudflare Pages.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>node scripts/fix-cloudflare-routes.mjs</strong><br>
+        Inspeciona o arquivo <span class="inline-code">_worker.js/index.js</span> gerado para
+        verificar se o mapeamento da rota <span class="inline-code">"/"</span> aponta para a
+        função <span class="inline-code">index.func.js</span> (correto) ou para o asset
+        <span class="inline-code">favicon.ico</span> (bug). Em caso de bug, realiza a correção
+        automaticamente. Esta etapa é uma salvaguarda pós-build.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>wrangler pages deploy .vercel/output/static --project-name=tem-luz-ai</strong><br>
+        Faz o upload do output para o Cloudflare Pages. O wrangler autentica via
+        <span class="inline-code">CLOUDFLARE_API_TOKEN</span>, cria uma nova implantação no projeto
+        "tem-luz-ai" e, após a conclusão, a nova versão entra em produção automaticamente em todos
+        os 200+ PoPs da Cloudflare.
+      </div>
+    </li>
+  </ol>
+
+  <h3 class="subsection" id="sec6-3">6.3 Problemas, Causas e Soluções</h3>
+
+  <p>
+    Durante o desenvolvimento, o time identificou e solucionou sete problemas técnicos relevantes.
+    Cada problema é documentado com sua causa raiz, impacto real e solução implementada — seguindo
+    a abordagem de análise de causa raiz (Root Cause Analysis) proposta por Pressman (2016).
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Problema</th>
+          <th>Causa Raiz</th>
+          <th>Impacto</th>
+          <th>Solução</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>P1</td>
+          <td>@cloudflare/next-on-pages rejeitou Next.js 16</td>
+          <td>O adapter suportava apenas Next.js ≤15.5.2 na época do projeto. A API interna do Next.js 16 havia mudado.</td>
+          <td>Build falhou completamente — bloqueou todo o desenvolvimento.</td>
+          <td>Downgrade para Next.js 15.3.0 via <span class="inline-code">package.json</span>. Versão estável e totalmente compatível com o adapter.</td>
+        </tr>
+        <tr>
+          <td>P2</td>
+          <td>Rota "/" servia favicon.ico (Content-Type: image/x-icon) em vez do HTML da Home</td>
+          <td>O @cloudflare/next-on-pages, ao encontrar <span class="inline-code">app/favicon.ico</span>, registrava-o como asset estático e sobrescrevia o mapeamento da rota <span class="inline-code">"/"</span> no <span class="inline-code">_worker.js/index.js</span> com o path do favicon, em vez da função index.</td>
+          <td>A Home page era completamente inacessível — todos os usuários que acessavam a raiz do site recebiam o ícone binário. Bug de severidade crítica afetando 100% das visitas.</td>
+          <td>Mover <span class="inline-code">app/favicon.ico</span> para <span class="inline-code">public/favicon.ico</span>. Criação de <span class="inline-code">scripts/fix-cloudflare-routes.mjs</span> como salvaguarda que detecta e corrige o mapeamento pós-build caso o bug reapareça.</td>
+        </tr>
+        <tr>
+          <td>P3</td>
+          <td>generateStaticParams incompatível com edge runtime</td>
+          <td>O Next.js proíbe a combinação de geração estática (<span class="inline-code">generateStaticParams</span>) com edge runtime na mesma página.</td>
+          <td>Erro de build TypeScript. A rota de módulo não era compilada.</td>
+          <td>Remoção de <span class="inline-code">generateStaticParams</span>. Adição de <span class="inline-code">export const dynamic = 'force-dynamic'</span>. A rota passou a ser resolvida dinamicamente no edge.</td>
+        </tr>
+        <tr>
+          <td>P4</td>
+          <td>Math.random() em Server Components</td>
+          <td>Função impura viola a regra de pureza dos Server Components React 19. Produz valores diferentes no servidor e no cliente, causando hydration mismatch.</td>
+          <td>Erro de runtime no browser: "Hydration failed because the initial UI does not match what was rendered on the server." Aparecia no console em produção.</td>
+          <td>Substituição por arrays <span class="inline-code">STARS</span> e <span class="inline-code">STARS_D</span> com 60 e 40 coordenadas pré-geradas, respectivamente, embutidas no código-fonte.</td>
+        </tr>
+        <tr>
+          <td>P5</td>
+          <td>next/font/google incompatível com edge runtime</td>
+          <td>O módulo <span class="inline-code">next/font/google</span> utiliza APIs Node.js (<span class="inline-code">fs</span>) internamente para baixar e cachear fontes, o que é proibido no edge runtime.</td>
+          <td>Erro de build: "The edge runtime does not support Node.js 'fs' module."</td>
+          <td>Remoção completa de <span class="inline-code">next/font/google</span>. Uso de <span class="inline-code">font-sans</span> do Tailwind CSS (system font stack: Segoe UI, Arial, sans-serif) que não requer download.</td>
+        </tr>
+        <tr>
+          <td>P6</td>
+          <td>SIGKILL (OOM) durante next build no sandbox</td>
+          <td>O sandbox de desenvolvimento disponibiliza ~680MB de RAM. O processo do worker interno do Next.js (que faz bundling paralelo) alocou até 471MB de RSS, levando o kernel Linux a matar o processo por OOM.</td>
+          <td>Impossibilidade de fazer build e deploy diretamente do sandbox. Bloqueou a implantação dos arquivos SEO (Iteração 3).</td>
+          <td>Criação do workflow GitHub Actions (<span class="inline-code">.github/workflows/deploy.yml</span>) com <span class="inline-code">ubuntu-latest</span> (7GB RAM) e <span class="inline-code">NODE_OPTIONS=--max-old-space-size=4096</span>. Adição de <span class="inline-code">outputFileTracingExcludes</span> no <span class="inline-code">next.config.ts</span> para reduzir o file tracing.</td>
+        </tr>
+        <tr>
+          <td>P7</td>
+          <td>git push bloqueado para .github/workflows/</td>
+          <td>O token do GitHub App utilizado pelo sandbox não possuía a permissão <span class="inline-code">workflows</span> (escopo necessário para criar/modificar arquivos em .github/workflows/).</td>
+          <td>Impossibilidade de fazer push automático do arquivo <span class="inline-code">deploy.yml</span>. O CI/CD não pôde ser ativado automaticamente.</td>
+          <td>O arquivo foi commitado localmente no repositório. Para ativá-lo, é necessário adicionar o arquivo manualmente via interface web do GitHub (Actions → New workflow) ou via push com um token com permissão <span class="inline-code">workflows</span>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="subsection" id="sec6-4">6.4 Configuração de SEO e Indexação</h3>
+
+  <p>
+    A estratégia de SEO implementada no sistema cobre as quatro dimensões principais de otimização
+    para mecanismos de busca: metadados técnicos, dados estruturados, sitemap e política de indexação.
+  </p>
+
+  <h4 class="subsubsection">Metadados (app/layout.tsx)</h4>
+
+  <pre><code>export const metadata: Metadata = {
+  title: { default: "Tem Luz Aí? | Poluição Luminosa",
+           template: "%s | Tem Luz Aí?" },
+  description: "Site educacional sobre Poluição Luminosa...",
+  keywords: ["poluição luminosa", "light pollution", "céu noturno",
+             "astronomia educação", "skyglow", "glare", "light trespass",
+             "clutter", "astroturismo", "IFBA", "CientificAção",
+             "educação ambiental", "via láctea", "melatonina", "fauna noturna"],
+  authors: [{ name: "Joabe Carmo de Santana", url: "https://tem-luz-ai.pages.dev" }],
+  metadataBase: new URL("https://tem-luz-ai.pages.dev"),
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true,
+    googleBot: { index: true, follow: true,
+      "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 } },
+  openGraph: { title: "...", url: "...", siteName: "Tem Luz Aí?",
+               locale: "pt_BR", type: "website" },
+  twitter: { card: "summary_large_image", creator: "@temLuzAi" }
+};</code></pre>
+
+  <h4 class="subsubsection">Schema.org JSON-LD (dois schemas)</h4>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Schema</th><th>@type</th><th>Propriedades Principais</th><th>Objetivo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Schema 1</td>
+          <td><span class="inline-code">WebSite</span></td>
+          <td>name, url, description, inLanguage, author (Person+EducationalOrganization), publisher, potentialAction (SearchAction)</td>
+          <td>Informar ao Google o tipo de site e habilitar o search box de sitelinks nos resultados.</td>
+        </tr>
+        <tr>
+          <td>Schema 2</td>
+          <td><span class="inline-code">EducationalOrganization</span></td>
+          <td>name, url, description, knowsAbout (5 tópicos), member (3 pessoas: pesquisador + orientadores)</td>
+          <td>Classificar o projeto como organização educacional; listar os temas de especialização e a equipe.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="subsubsection">Sitemap XML (12 URLs)</h4>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>URL</th><th>Prioridade</th><th>changeFrequency</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>https://tem-luz-ai.pages.dev/</td><td>1.0</td><td>weekly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos</td><td>0.9</td><td>weekly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/para-professores</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/quiz</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos/introducao</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos/gastos-energia</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos/observacoes-astronomicas</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos/consequencias-socioambientais</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos/cultura-ceu</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos/leis-normas-medidas</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/modulos/conclusoes-propostas</td><td>0.8</td><td>monthly</td></tr>
+        <tr><td>https://tem-luz-ai.pages.dev/desafio</td><td>0.7</td><td>monthly</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="subsubsection">robots.txt (public/robots.txt)</h4>
+
+  <pre><code>User-agent: *
+Allow: /
+Sitemap: https://tem-luz-ai.pages.dev/sitemap.xml</code></pre>
+
+  <div class="callout callout-info">
+    <strong>Próximo passo (pendente ação do usuário):</strong> Registrar
+    <span class="inline-code">https://tem-luz-ai.pages.dev</span> no Google Search Console,
+    verificar a propriedade via meta tag (inserindo o código em
+    <span class="inline-code">metadata.verification.google</span> no layout.tsx) e enviar o sitemap
+    para indexação.
+  </div>
+
+  <h3 class="subsection" id="sec6-5">6.5 Matriz de Rastreabilidade</h3>
+
+  <p>
+    A matriz de rastreabilidade (Traceability Matrix) garante que cada requisito funcional esteja
+    ligado a um ou mais componentes/arquivos de implementação, permitindo auditar a cobertura de
+    requisitos e facilitar a manutenção futura.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Requisito</th><th>Arquivo(s) de Implementação</th><th>Componente(s)</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>RF01 — 7 módulos educacionais</td>
+          <td><span class="inline-code">data/modulos.ts</span><br><span class="inline-code">app/modulos/</span></td>
+          <td>ModulosPage, ModuloDetailPage, ModuloCard</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF02 — Conteúdo com Markdown, glossário, quiz por módulo</td>
+          <td><span class="inline-code">app/modulos/[id]/page.tsx</span><br><span class="inline-code">data/modulos.ts</span></td>
+          <td>ModuloDetailPage, renderMarkdown(), Quiz</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF03 — Quiz Geral 20 questões</td>
+          <td><span class="inline-code">data/quizGeral.ts</span><br><span class="inline-code">app/quiz/page.tsx</span></td>
+          <td>QuizPage, Quiz</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF04 — Progresso do usuário via localStorage</td>
+          <td><span class="inline-code">components/ProgressoBar.tsx</span><br><span class="inline-code">components/Quiz.tsx</span></td>
+          <td>ProgressoBar, Quiz (handleEnviar)</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF05 — Mural de 3 cards na Home</td>
+          <td><span class="inline-code">app/page.tsx</span></td>
+          <td>HomePage (seção mural de convites)</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF06 — Navbar fixa com todos os links</td>
+          <td><span class="inline-code">components/Navbar.tsx</span><br><span class="inline-code">app/layout.tsx</span></td>
+          <td>Navbar, NavLink, MobileMenu</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF07 — Tutorial fotografia noturna</td>
+          <td><span class="inline-code">app/desafio/page.tsx</span></td>
+          <td>DesafioPage</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF08 — Materiais para professores</td>
+          <td><span class="inline-code">app/para-professores/page.tsx</span></td>
+          <td>ParaProfessoresPage</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF09 — Links para formulários externos</td>
+          <td><span class="inline-code">app/page.tsx</span><br><span class="inline-code">app/desafio/page.tsx</span></td>
+          <td>HomePage (3 CTAs), DesafioPage (2 CTAs)</td>
+          <td><span class="badge badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>RF10 — Sitemap.xml dinâmico</td>
+          <td><span class="inline-code">app/sitemap.ts</span><br><span class="inline-code">public/sitemap.xml</span></td>
+          <td>sitemap() function (Next.js MetadataRoute)</td>
+          <td><span class="badge badge-pend">⏳ Deploy Pendente</span></td>
+        </tr>
+        <tr>
+          <td>RF11 — robots.txt</td>
+          <td><span class="inline-code">public/robots.txt</span></td>
+          <td>Asset estático CDN Cloudflare</td>
+          <td><span class="badge badge-pend">⏳ Deploy Pendente</span></td>
+        </tr>
+        <tr>
+          <td>RF12 — Metadados SEO completos</td>
+          <td><span class="inline-code">app/layout.tsx</span><br><span class="inline-code">components/JsonLd.tsx</span></td>
+          <td>RootLayout (metadata export), JsonLd (2 schemas)</td>
+          <td><span class="badge badge-pend">⏳ Deploy Pendente</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       7. REFERÊNCIAS
+  ════════════════════════════════════════════════════════════ -->
+  <div id="sec7" class="section-header">
+    <span class="section-num">SEC. 7</span>
+    <h2 class="section-title">Referências</h2>
+  </div>
+
+  <p><strong>Literatura de Engenharia de Software:</strong></p>
+
+  <ul class="doc-list">
+    <li>SOMMERVILLE, Ian. <em>Engenharia de Software</em>. 9. ed. São Paulo: Pearson Prentice Hall, 2011.</li>
+    <li>PRESSMAN, Roger S.; MAXIM, Bruce R. <em>Engenharia de Software: Uma Abordagem Profissional</em>. 8. ed. Porto Alegre: AMGH, 2016.</li>
+    <li>BASS, L.; CLEMENTS, P.; KAZMAN, R. <em>Software Architecture in Practice</em>. 3. ed. Addison-Wesley, 2012.</li>
+  </ul>
+
+  <p><strong>Documentação Técnica:</strong></p>
+
+  <ul class="doc-list">
+    <li>Next.js Documentation — App Router, Metadata, sitemap.ts, edge runtime. Disponível em: <a href="https://nextjs.org/docs" target="_blank">https://nextjs.org/docs</a></li>
+    <li>Cloudflare Pages Documentation. Disponível em: <a href="https://developers.cloudflare.com/pages" target="_blank">https://developers.cloudflare.com/pages</a></li>
+    <li>Cloudflare Workers Runtime API. Disponível em: <a href="https://developers.cloudflare.com/workers/runtime-apis" target="_blank">https://developers.cloudflare.com/workers/runtime-apis</a></li>
+    <li>@cloudflare/next-on-pages — GitHub Repository. Disponível em: <a href="https://github.com/cloudflare/next-on-pages" target="_blank">https://github.com/cloudflare/next-on-pages</a></li>
+    <li>Wrangler CLI Documentation. Disponível em: <a href="https://developers.cloudflare.com/workers/wrangler" target="_blank">https://developers.cloudflare.com/workers/wrangler</a></li>
+    <li>React 19 Documentation — Server Components, Client Components, Hydration. Disponível em: <a href="https://react.dev" target="_blank">https://react.dev</a></li>
+    <li>TypeScript 5 Documentation. Disponível em: <a href="https://www.typescriptlang.org/docs" target="_blank">https://www.typescriptlang.org/docs</a></li>
+    <li>Tailwind CSS v4 Documentation. Disponível em: <a href="https://tailwindcss.com/docs" target="_blank">https://tailwindcss.com/docs</a></li>
+    <li>Schema.org — WebSite, EducationalOrganization, SearchAction. Disponível em: <a href="https://schema.org" target="_blank">https://schema.org</a></li>
+    <li>Google Search Central — Sitemaps, robots.txt, JSON-LD. Disponível em: <a href="https://developers.google.com/search" target="_blank">https://developers.google.com/search</a></li>
+    <li>GitHub Actions Documentation — Workflows, ubuntu-latest. Disponível em: <a href="https://docs.github.com/actions" target="_blank">https://docs.github.com/actions</a></li>
+    <li>Open Graph Protocol. Disponível em: <a href="https://ogp.me" target="_blank">https://ogp.me</a></li>
+    <li>Web Content Accessibility Guidelines (WCAG) 2.1. W3C, 2018. Disponível em: <a href="https://www.w3.org/WAI/WCAG21/quickref" target="_blank">https://www.w3.org/WAI/WCAG21/quickref</a></li>
+  </ul>
+
+  <p><strong>Fontes do Projeto:</strong></p>
+
+  <ul class="doc-list">
+    <li>SANTANA, Joabe Carmo de. <em>Apostila de Poluição Luminosa</em>. Projeto CientificAção. IFBA, 2025.</li>
+    <li>Repositório GitHub do Projeto: <a href="https://github.com/JbsbhsKsuwabe/my-plwebapp" target="_blank">https://github.com/JbsbhsKsuwabe/my-plwebapp</a></li>
+    <li>Site em Produção: <a href="https://tem-luz-ai.pages.dev" target="_blank">https://tem-luz-ai.pages.dev</a></li>
+  </ul>
+
+  <hr class="divider">
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <p>
+      <strong>Documentação de Engenharia de Software — Sistema "Tem Luz Aí?"</strong>
+    </p>
+    <p style="margin-top:0.5rem">
+      Versão 1.0 · Julho de 2025 · Projeto CientificAção / IFBA · UFBA
+    </p>
+    <p style="margin-top:0.5rem">
+      Joabe Carmo de Santana (Pesquisador/Dev) ·
+      Gorhan Freitas Noronha, Orientador (UFBA) ·
+      Júlia Oliveira dos Santos, Coorientadora (IFBA)
+    </p>
+    <p style="margin-top:1rem; font-size:0.75rem; color: #334155">
+      <a href="#toc" style="color:#6366f1; text-decoration:none;">↑ Voltar ao Índice</a>
+    </p>
+  </div>
+
+</div><!-- /wrapper -->
+</body>
+</html>
