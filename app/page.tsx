@@ -68,37 +68,9 @@ export default function HomePage() {
           </div>
 
           {/* Mural de convites */}
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {/* Convite para Professores */}
-            <div className="relative group bg-gradient-to-br from-blue-900/60 to-indigo-900/60 border border-blue-700/40 rounded-2xl p-6 hover:border-blue-500/60 transition-all hover:-translate-y-1">
-              <div className="flex items-start gap-4 mb-4">
-                <span className="text-4xl">👩‍🏫</span>
-                <div>
-                  <span className="inline-block bg-blue-500/20 text-blue-300 text-xs font-medium px-2 py-1 rounded-full mb-2">
-                    PESQUISA
-                  </span>
-                  <h2 className="text-white text-xl font-bold leading-tight">
-                    Professor(a), participe da pesquisa
-                  </h2>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm leading-relaxed mb-5">
-                Você é docente? Queremos conhecer sua familiaridade com a Poluição Luminosa e sua
-                opinião sobre o tema no ensino. Responda nossa entrevista semiestruturada — leva
-                poucos minutos.
-              </p>
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSdpSUsaZ5vPI0m6CtxzmgR4cpSHmqB69vZpurNoNpHYd9-5AA/viewform?usp=sharing&ouid=110107342351826830651"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-2.5 rounded-xl transition-colors"
-              >
-                📋 Responder entrevista
-              </a>
-            </div>
-
+          <div className="flex justify-center max-w-6xl mx-auto">
             {/* Convite para o Desafio */}
-            <div className="relative group bg-gradient-to-br from-purple-900/60 to-pink-900/60 border border-purple-700/40 rounded-2xl p-6 hover:border-purple-500/60 transition-all hover:-translate-y-1">
+            <div className="relative group bg-gradient-to-br from-purple-900/60 to-pink-900/60 border border-purple-700/40 rounded-2xl p-8 hover:border-purple-500/60 transition-all hover:-translate-y-1 max-w-lg w-full">
               <div className="flex items-start gap-4 mb-4">
                 <span className="text-4xl">📸</span>
                 <div>
@@ -120,34 +92,6 @@ export default function HomePage() {
               >
                 🌠 Participar do Desafio
               </Link>
-            </div>
-
-            {/* Convite para o Público Geral — Pesquisa Rápida */}
-            <div className="relative group bg-gradient-to-br from-emerald-900/60 to-teal-900/60 border border-emerald-700/40 rounded-2xl p-6 hover:border-emerald-500/60 transition-all hover:-translate-y-1">
-              <div className="flex items-start gap-4 mb-4">
-                <span className="text-4xl">🌆</span>
-                <div>
-                  <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-medium px-2 py-1 rounded-full mb-2">
-                    PÚBLICO GERAL / PESQUISA RÁPIDA
-                  </span>
-                  <h2 className="text-white text-xl font-bold leading-tight">
-                    Você reconhece Poluição Luminosa na sua cidade?
-                  </h2>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm leading-relaxed mb-5">
-                Você já percebeu o céu alaranjado à noite, postes invadindo seu quarto ou holofotes
-                ofuscantes? Conte para a gente! Responda uma pesquisa rápida sobre como a poluição
-                luminosa aparece no seu dia a dia e quais impactos você já sentiu.
-              </p>
-              <a
-                href="https://forms.gle/RE1v5BR1RsJHCkVW9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2.5 rounded-xl transition-colors"
-              >
-                📝 Responder formulário
-              </a>
             </div>
           </div>
         </div>
