@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { modulos } from "@/data/modulos";
-import ModuloCard from "@/components/ModuloCard";
+import ModulosBusca from "@/components/ModulosBusca";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,11 +8,13 @@ export const metadata: Metadata = {
     "7 módulos sobre Poluição Luminosa — com glossário, exemplos e quiz interativo. Aprenda sobre energia, astronomia, fauna e mais.",
 };
 
+export const runtime = "edge";
+
 export default function ModulosPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 bg-indigo-950/60 border border-indigo-800/50 rounded-full px-4 py-1.5 text-indigo-300 text-sm mb-4">
           📚 Conteúdo completo
         </div>
@@ -24,12 +25,8 @@ export default function ModulosPage() {
         </p>
       </div>
 
-      {/* Grid de módulos */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        {modulos.map((modulo) => (
-          <ModuloCard key={modulo.id} modulo={modulo} />
-        ))}
-      </div>
+      {/* Busca + Grid — Client Component */}
+      <ModulosBusca />
 
       {/* CTA Quiz Geral */}
       <div className="text-center bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border border-indigo-700/30 rounded-2xl p-8">
@@ -49,4 +46,3 @@ export default function ModulosPage() {
     </div>
   );
 }
-export const runtime = 'edge';

@@ -191,7 +191,7 @@ export default function RootLayout({
             </div>
             <div className="mt-8 pt-6 border-t border-slate-800 text-center text-slate-500 text-sm">
               <p>
-                © 2025 Tem Luz Aí? — Projeto CientificAção · IFBA · UFBA · Conteúdo baseado
+                © 2026 Tem Luz Aí? — Projeto CientificAção · IFBA · UFBA · Conteúdo baseado
                 exclusivamente nos documentos de pesquisa do projeto.
               </p>
             </div>
