@@ -104,7 +104,7 @@ export default function ModulosBusca() {
           {resultados.length === 0
             ? "Nenhum módulo encontrado para"
             : `${resultados.length} módulo${resultados.length > 1 ? "s" : ""} encontrado${resultados.length > 1 ? "s" : ""} para`}{" "}
-          <span className="text-white font-semibold">"{query}"</span>
+          <span className="text-white font-semibold">&ldquo;{query}&rdquo;</span>
         </p>
       )}
 
@@ -170,7 +170,7 @@ export default function ModulosBusca() {
         <div className="text-center py-16 text-slate-500">
           <p className="text-4xl mb-3">🔭</p>
           <p className="text-lg font-medium text-slate-400">Nenhum resultado encontrado</p>
-          <p className="text-sm mt-1">Tente palavras diferentes — ex: "energia", "astronomia", "fauna"</p>
+          <p className="text-sm mt-1">Tente palavras diferentes — ex: &ldquo;energia&rdquo;, &ldquo;astronomia&rdquo;, &ldquo;fauna&rdquo;</p>
           <button
             onClick={() => setQuery("")}
             className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm underline"
